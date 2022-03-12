@@ -19,10 +19,12 @@ namespace ImageFiltering
             return kernel;
         }
 
-        public static Vector4[,] GaussianBlur(int size)
+        public static Vector4[,] GaussianBlur()
         {
-            // TODO
-            throw new System.NotImplementedException();
+            return new[,] { 
+                { Vector4.Zero, Vector4.One, Vector4.Zero }, 
+                { Vector4.One, Vector4.One * 4, Vector4.One}, 
+                { Vector4.Zero, Vector4.One, Vector4.Zero } };
         }
 
         public static Vector4[,] Sharpen(int size)
@@ -43,10 +45,12 @@ namespace ImageFiltering
             return kernel;
         }
 
-        public static Vector4[,] EdgeDetection(int size)
+        public static Vector4[,] EdgeDetection()
         {
-            // TODO
-            throw new System.NotImplementedException();
+            return new[,] {
+                { Vector4.Zero, -Vector4.One, Vector4.Zero },
+                { Vector4.Zero, new Vector4(1, 1, 1, 2), Vector4.Zero},
+                { Vector4.Zero, Vector4.Zero, Vector4.Zero } };
         }
 
         public static Vector4[,] Emboss(int size)

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Numerics;
+using System.Linq;
 
 namespace ImageFiltering
 {
@@ -33,6 +36,40 @@ namespace ImageFiltering
                     color.W),
                 Vector4.Zero,
                 Vector4.One);
+        }
+
+        public static Func<Vector4, Vector4> FromPolyline(List<Point> rawPoints)
+        {
+            var points = rawPoints.Select(p => new Point(p.X / 256f, 1 - p.Y / 256f)).ToList();
+
+            Func<float, float> map = (float input) =>
+            {
+                for (int i = 0; i < points.Count; i++)
+                {
+                    if (input >= points[i].X && input <= points[i + 1].X)
+                    {
+                        var (x1, y1, x2, y2) = (points[i].X, points[i].Y, points[i+1].X, points[i+1].Y);
+                        var m = (y2 - y1) / (x2 - x1);
+                        var b = (x2 * y1 - x1 * y2) / (x2 - x1);
+
+                        return (float)(m * input + b);
+                    }
+                }
+
+                throw new Exception("unreachable");
+            };
+
+            return color =>
+            {
+                var s = Vector4.Clamp(
+                                new(map(color.X), map(color.Y), map(color.Z), color.W),
+                                Vector4.Zero,
+                                Vector4.One);
+                return Vector4.Clamp(
+                                new(map(color.X), map(color.Y), map(color.Z), color.W),
+                                Vector4.Zero,
+                                Vector4.One);
+            };
         }
     }
 }

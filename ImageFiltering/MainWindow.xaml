@@ -5,20 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageFiltering"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="600" MinHeight="450" MinWidth="600">
+        Title="MainWindow" Height="695" Width="1131" MinHeight="695" MinWidth="1131">
     <Grid>
         <Button Content="Pick image" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click"/>
         <Button Content="Reset image" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click_5" />
         <Button Content="Save image" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click_11"  />
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" x:Name="OriginalImage" Margin="10,141,0,10" HorizontalAlignment="Left"/>
-            <Image Grid.Column="2" x:Name="TransformedImage" Margin="0,142,10,10" HorizontalAlignment="Right"/>
-        </Grid>
-        <GroupBox Header="Filters" Margin="217,10,0,0" HorizontalAlignment="Left" Width="153" Height="121" VerticalAlignment="Top">
+
+        <GroupBox Header="Filters" Margin="200,10,0,0" HorizontalAlignment="Left" Width="170" Height="121" VerticalAlignment="Top">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -26,9 +19,30 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Button Grid.Row="0" Content="Inverse" Click="Button_Click_1" />
-                <Button Grid.Row="1" Content="Brightness correction" Click="Button_Click_2" />
-                <Button Grid.Row="2" Content="Contrast" Click="Button_Click_3" />
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Inverse" Click="Button_Click_1" />
+                    <Button Grid.Column="1" Content="Load" Click="Button_Click_14" />
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Brightness correction" Click="Button_Click_2" />
+                    <Button Grid.Column="1" Content="Load" Click="Button_Click_15"  />
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Contrast" Click="Button_Click_3" />
+                    <Button Grid.Column="1" Content="Load" Click="Button_Click_16"  />
+                </Grid>
                 <Button Grid.Row="3" Content="Gamma correction" Click="Button_Click_4" />
             </Grid>
         </GroupBox>
@@ -48,5 +62,56 @@
                 <Button Grid.Row="4" Content="Emboss" Click="Button_Click_10" />
             </Grid>
         </GroupBox>
+        <GroupBox Header="Filter editor" Margin="545,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="256" />
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Canvas  Grid.Column="0" x:Name="PolylineCanvas" Height="256" Width="256" Background="Black" MouseMove="PolylineCanvas_MouseMove" MouseUp="PolylineCanvas_MouseUp" MouseLeave="PolylineCanvas_MouseLeave">
+                    <Polyline x:Name="polyline" Points="0,256 256,0" Stroke="White"/>
+                    <!-- Source: https://stackoverflow.com/a/41616789 -->
+                    <ItemsControl x:Name="Cock" ItemsSource="{Binding Points, ElementName=polyline, Mode=OneWay}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Line Stroke="LightSteelBlue" StrokeThickness="8" StrokeStartLineCap="Round" StrokeEndLineCap="Round" MouseDown="Line_MouseDown" MouseUp="Line_MouseUp" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Canvas>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Content="Reset" Click="Button_Click_12" />
+                    <Button Grid.Row="1" Content="Add point" Click="Button_Click_13" />
+                    <Button Grid.Row="2" Content="Remove point" Click="Button_Click_17" />
+                    <Button Grid.Row="3" Content="Save" Click="Button_Click_18" />
+                </Grid>
+            </Grid>
+        </GroupBox>
+        <ListBox x:Name="SavedFilters" Margin="900,20,0,0" Width="200" Height="265"  HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" x:Name="OriginalImage" Margin="10,310,0,10" HorizontalAlignment="Left"/>
+            <Image Grid.Column="1" x:Name="TransformedImage" Margin="0,310,10,10" HorizontalAlignment="Right"/>
+        </Grid>
     </Grid>
 </Window>

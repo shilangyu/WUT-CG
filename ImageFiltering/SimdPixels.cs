@@ -111,6 +111,7 @@ namespace ImageFiltering
                 var middle = (s - 1) / 2;
                 var sum = Vector4.Zero;
                 foreach (var r in kernel) sum += r;
+                if (sum.X == 0 || sum.Y == 0 || sum.Z == 0 || sum.W == 0) sum = Vector4.One;
 
                 Parallel.For(0, height, (y, state) =>
                 {
