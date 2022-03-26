@@ -49,7 +49,7 @@
                                 <Button Grid.Column="1" Content="Load" Click="Button_Click_16"  />
                             </Grid>
                             <Button Grid.Row="3" Content="Gamma correction" Click="Button_Click_4" />
-                            <Button Grid.Row="4" Content="Grey scale" Click="Button_Click_22" />
+                            <Button Grid.Row="4" Content="Gray scale" Click="Button_Click_22" />
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="Kernels" Margin="180,0,0,0" HorizontalAlignment="Left" Width="153" Height="121" VerticalAlignment="Top">
@@ -126,21 +126,68 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             
                             <Label Grid.Row="0" Grid.Column="0" Content="Red subdivisions" />
-                            <Slider x:Name="RedSubdivisionsSlider" Grid.Row="0" Grid.Column="1"  Maximum="255" Minimum="1" SmallChange="1" Value="128" Width="100" VerticalAlignment="Center"  />
+                            <Slider x:Name="RedSubdivisionsSlider" Grid.Row="0" Grid.Column="1"  Maximum="255" Minimum="1" SmallChange="1" Value="128" Width="100" VerticalAlignment="Center" IsSnapToTickEnabled="True" />
+                            <Label Grid.Row="0" Grid.Column="2" Content="{Binding Value, ElementName=RedSubdivisionsSlider}" />
+                            
                             <Label Grid.Row="1" Grid.Column="0" Content="Green subdivisions" />
-                            <Slider x:Name="GreenSubdivisionsSlider" Grid.Row="1" Grid.Column="1"  Maximum="255" Minimum="1" SmallChange="1" Value="128" Width="100" VerticalAlignment="Center"  />
+                            <Slider x:Name="GreenSubdivisionsSlider" Grid.Row="1" Grid.Column="1"  Maximum="255" Minimum="1" SmallChange="1" Value="128" Width="100" VerticalAlignment="Center" IsSnapToTickEnabled="True" />
+                            <Label Grid.Row="1" Grid.Column="2" Content="{Binding Value, ElementName=GreenSubdivisionsSlider}" />
+
+
                             <Label Grid.Row="2" Grid.Column="0" Content="Blue subdivisions" />
-                            <Slider x:Name="BlueSubdivisionsSlider" Grid.Row="2" Grid.Column="1"  Maximum="255" Minimum="1" SmallChange="1" Value="128" Width="100" VerticalAlignment="Center"  />
+                            <Slider x:Name="BlueSubdivisionsSlider" Grid.Row="2" Grid.Column="1"  Maximum="255" Minimum="1" SmallChange="1" Value="128" Width="100" VerticalAlignment="Center" IsSnapToTickEnabled="True" />
+                            <Label Grid.Row="2" Grid.Column="2" Content="{Binding Value, ElementName=BlueSubdivisionsSlider}" />
+
                             <Button Grid.Row="3" Grid.Column="1" Content="Apply" Click="Button_Click_21" />
                         </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Dithering">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox Header="Ordered dithering" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Content="Red levels" />
+                            <Slider x:Name="RedLevels" Grid.Row="0" Grid.Column="1"  Maximum="32" Minimum="1" SmallChange="1" Value="2" Width="100" VerticalAlignment="Center" IsSnapToTickEnabled="True" />
+                            <Label Grid.Row="0" Grid.Column="2" Content="{Binding Value, ElementName=RedLevels}" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Content="Green levels" />
+                            <Slider x:Name="GreenLevels" Grid.Row="1" Grid.Column="1"  Maximum="32" Minimum="1" SmallChange="1" Value="2" Width="100" VerticalAlignment="Center" IsSnapToTickEnabled="True" />
+                            <Label Grid.Row="1" Grid.Column="2" Content="{Binding Value, ElementName=GreenLevels}" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Content="Blue levels" />
+                            <Slider x:Name="BlueLevels" Grid.Row="2" Grid.Column="1"  Maximum="32" Minimum="1" SmallChange="1" Value="2" Width="100" VerticalAlignment="Center" IsSnapToTickEnabled="True" />
+                            <Label Grid.Row="2" Grid.Column="2" Content="{Binding Value, ElementName=BlueLevels}" />
+
+                            <Label Grid.Row="3" Grid.Column="0" Content="Dither matrix size" />
+                            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="DitherSize" >
+                                <ComboBoxItem IsSelected="True">2</ComboBoxItem>
+                                <ComboBoxItem>3</ComboBoxItem>
+                                <ComboBoxItem>4</ComboBoxItem>
+                                <ComboBoxItem>6</ComboBoxItem>
+                            </ComboBox>
+
+                            <Button Grid.Row="4" Grid.Column="1" Content="Apply" Click="Button_Click_23" />
+                        </Grid>
+                    </GroupBox>
+                </Grid>
             </TabItem>
         </TabControl>
         

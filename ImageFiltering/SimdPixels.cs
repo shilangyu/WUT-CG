@@ -148,6 +148,40 @@ namespace ImageFiltering {
             }
         }
 
+        public SimdPixels OrderedDithering(float[,] ditherMatrix, (int r, int g, int b) levels) {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            // assuming dither matrix is square
+            var n = ditherMatrix.GetLength(0);
+            var levelsMinusOne = new Vector4(levels.r - 1, levels.g - 1, levels.b - 1, 1);
+
+            unchecked {
+                var clone = (SimdPixels)Clone();
+
+                Parallel.For(0, height, (y, state) => {
+                    for (var x = 0; x < width; x++) {
+                        var pixel = this[x, y];
+                        var i = levelsMinusOne * pixel;
+                        var cols = new Vector4((float)Math.Floor(i.X), (float)Math.Floor(i.Y), (float)Math.Floor(i.Z), 1);
+                        var frac = i - cols;
+                        var threshold = ditherMatrix[x % n, y % n];
+
+                        if (frac.X >= threshold) { cols.X += 1; }
+                        if (frac.Y >= threshold) { cols.Y += 1; }
+                        if (frac.Z >= threshold) { cols.Z += 1; }
+
+                        clone[x, y] = Vector4.One / levelsMinusOne * cols;
+                    }
+                });
+
+                sw.Stop();
+                Debug.WriteLine($"OrderedDithering: {sw.Elapsed}");
+
+                return clone;
+            }
+        }
+
         public object Clone() {
             var clone = (SimdPixels)this.MemberwiseClone();
             clone.pixels = pixels.ToArray();
