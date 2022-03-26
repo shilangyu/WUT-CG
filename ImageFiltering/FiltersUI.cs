@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 
 namespace ImageFiltering {
     public partial class MainWindow : Window {
@@ -16,6 +16,10 @@ namespace ImageFiltering {
 
         private void Button_Click_4(object sender, RoutedEventArgs e) {
             Pixels = Pixels?.ApplyFilter(Filters.GammaCorrection(1.5f));
+        }
+
+        private void Button_Click_22(object sender, RoutedEventArgs e) {
+            Pixels = Pixels?.ApplyFilter(Filters.GrayScale());
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e) {

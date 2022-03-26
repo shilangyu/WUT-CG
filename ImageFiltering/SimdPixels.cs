@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
@@ -7,12 +7,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace ImageFiltering {
-    class SimdPixels : ICloneable {
+    public class SimdPixels : ICloneable {
         // RGBA normalized to the [0; 1] range
         private Vector4[] pixels;
         private readonly int stride;
-        public readonly int width;
-        public readonly int height;
+        private readonly int width;
+        private readonly int height;
 
         public SimdPixels(BitmapImage img) {
             var sw = new Stopwatch();
@@ -96,8 +96,8 @@ namespace ImageFiltering {
                 var s = kernel.GetLength(0);
                 var middle = (s - 1) / 2;
                 var sum = Vector4.Zero;
-                foreach (var r in kernel) sum += r;
-                if (sum.X == 0 || sum.Y == 0 || sum.Z == 0 || sum.W == 0) sum = Vector4.One;
+                foreach (var r in kernel) { sum += r; }
+                if (sum.X == 0 || sum.Y == 0 || sum.Z == 0 || sum.W == 0) { sum = Vector4.One; }
 
                 Parallel.For(0, height, (y, state) => {
                     for (var x = 0; x < width; x++) {

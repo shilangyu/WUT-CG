@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Numerics;
 using System.Linq;
 
 namespace ImageFiltering {
-    static class Filters {
-        static Vector4 inverter = new(1, 1, 1, 2);
+    public static class Filters {
+        private static Vector4 inverter = new(1, 1, 1, 2);
         public static Vector4 Invert(Vector4 color) {
             return inverter - color;
         }
@@ -30,6 +30,14 @@ namespace ImageFiltering {
                     color.W),
                 Vector4.Zero,
                 Vector4.One);
+        }
+
+        public static Func<Vector4, Vector4> GrayScale() {
+            var coeff = new Vector4(0.299f, 0.587f, 0.114f, 1);
+            return color => {
+                var l = Vector4.Dot(color, coeff) - color.W;
+                return new Vector4(l, l, l, color.W);
+            };
         }
 
         public static Func<Vector4, Vector4> FromPolyline(List<Point> rawPoints) {
