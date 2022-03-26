@@ -61,10 +61,7 @@ namespace ImageFiltering
 
             return color =>
             {
-                var s = Vector4.Clamp(
-                                new(map(color.X), map(color.Y), map(color.Z), color.W),
-                                Vector4.Zero,
-                                Vector4.One);
+               
                 return Vector4.Clamp(
                                 new(map(color.X), map(color.Y), map(color.Z), color.W),
                                 Vector4.Zero,

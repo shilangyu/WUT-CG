@@ -10,6 +10,8 @@
         <Button Content="Pick image" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click"/>
         <Button Content="Reset image" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click_5" />
         <Button Content="Save image" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click_11"  />
+        <Button Content="Undo" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click_19" />
+        <Button Content="Redo" HorizontalAlignment="Left" Margin="10,166,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click_20" />
 
         <GroupBox Header="Filters" Margin="200,10,0,0" HorizontalAlignment="Left" Width="170" Height="121" VerticalAlignment="Top">
             <Grid>

@@ -15,11 +15,20 @@ namespace ImageFiltering
     {
         SimdPixels? originalPixels;
         SimdPixels? pixels;
+
+        Stack<SimdPixels> undo = new();
+        Stack<SimdPixels> redo = new();
+
         SimdPixels? Pixels
         {
             get => pixels;
             set
             {
+                if (pixels is not null)
+                {
+                    redo.Clear();
+                    undo.Push(pixels);
+                }
                 pixels = value;
                 TransformedImage.Source = value?.ToBitmap();
             }
@@ -242,6 +251,26 @@ namespace ImageFiltering
             };
 
             SavedFilters.Items.Add(item);
+        }
+
+        private void Button_Click_19(object sender, RoutedEventArgs e)
+        {
+            if (undo.Count == 0 || pixels is null) return;
+
+            var ps = undo.Pop();
+            redo.Push(pixels);
+            pixels = ps;
+            TransformedImage.Source = ps.ToBitmap();
+        }
+
+        private void Button_Click_20(object sender, RoutedEventArgs e)
+        {
+            if (redo.Count == 0 || pixels is null) return;
+
+            var ps = redo.Pop();
+            undo.Push(pixels);
+            pixels = ps;
+            TransformedImage.Source = ps.ToBitmap();
         }
     }
 }
