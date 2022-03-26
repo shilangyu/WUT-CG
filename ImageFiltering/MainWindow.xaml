@@ -12,101 +12,136 @@
         <Button Content="Save image" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click_11"  />
         <Button Content="Undo" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click_19" />
         <Button Content="Redo" HorizontalAlignment="Left" Margin="10,166,0,0" VerticalAlignment="Top" Height="34" Width="146" Click="Button_Click_20" />
-
-        <GroupBox Header="Filters" Margin="200,10,0,0" HorizontalAlignment="Left" Width="170" Height="121" VerticalAlignment="Top">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Button Content="Inverse" Click="Button_Click_1" />
-                    <Button Grid.Column="1" Content="Load" Click="Button_Click_14" />
+        <TabControl Margin="200,10,0,0" Height="300" VerticalAlignment="Top">
+            <TabItem Header="Filtering">
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox Header="Filters" HorizontalAlignment="Left" Width="170" Height="121" VerticalAlignment="Top">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Inverse" Click="Button_Click_1" />
+                                <Button Grid.Column="1" Content="Load" Click="Button_Click_14" />
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Brightness correction" Click="Button_Click_2" />
+                                <Button Grid.Column="1" Content="Load" Click="Button_Click_15"  />
+                            </Grid>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Contrast" Click="Button_Click_3" />
+                                <Button Grid.Column="1" Content="Load" Click="Button_Click_16"  />
+                            </Grid>
+                            <Button Grid.Row="3" Content="Gamma correction" Click="Button_Click_4" />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Kernels" Margin="180,0,0,0" HorizontalAlignment="Left" Width="153" Height="121" VerticalAlignment="Top">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Button Grid.Row="0" Content="Blur" Click="Button_Click_6" />
+                            <Button Grid.Row="1" Content="Gaussian smoothing" Click="Button_Click_7" />
+                            <Button Grid.Row="2" Content="Sharpen" Click="Button_Click_8"  />
+                            <Button Grid.Row="3" Content="Edge detection" Click="Button_Click_9" />
+                            <Button Grid.Row="4" Content="Emboss" Click="Button_Click_10" />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Filter editor" Margin="340,-5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="256" />
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Canvas Grid.Column="0" x:Name="PolylineCanvas" Height="256" Width="256" Background="Black" MouseMove="PolylineCanvas_MouseMove" MouseUp="PolylineCanvas_MouseUp" MouseLeave="PolylineCanvas_MouseLeave">
+                                <Polyline x:Name="polyline" Points="0,256 256,0" Stroke="White"/>
+                                <!-- Source: https://stackoverflow.com/a/41616789 -->
+                                <ItemsControl x:Name="Cock" ItemsSource="{Binding Points, ElementName=polyline, Mode=OneWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Line Stroke="LightSteelBlue" StrokeThickness="8" StrokeStartLineCap="Round" StrokeEndLineCap="Round" MouseDown="Line_MouseDown" MouseUp="Line_MouseUp" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Canvas>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Content="Reset" Click="Button_Click_12" />
+                                <Button Grid.Row="1" Content="Add point" Click="Button_Click_13" />
+                                <Button Grid.Row="2" Content="Remove point" Click="Button_Click_17" />
+                                <Button Grid.Row="3" Content="Save" Click="Button_Click_18" />
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                    <ListBox x:Name="SavedFilters" Margin="700,0,0,0" Width="200" Height="265"  HorizontalAlignment="Left" VerticalAlignment="Top" />
                 </Grid>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Button Content="Brightness correction" Click="Button_Click_2" />
-                    <Button Grid.Column="1" Content="Load" Click="Button_Click_15"  />
+            </TabItem>
+            <TabItem Header="Quantization">
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox Header="Uniform quantization" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Grid.Row="0" Grid.Column="0" Content="Red subdivisions" />
+                            <Slider x:Name="RedSubdivisionsSlider" Grid.Row="0" Grid.Column="1"  Maximum="255" Minimum="1" SmallChange="1" Value="128" Width="100" VerticalAlignment="Center"  />
+                            <Label Grid.Row="1" Grid.Column="0" Content="Green subdivisions" />
+                            <Slider x:Name="GreenSubdivisionsSlider" Grid.Row="1" Grid.Column="1"  Maximum="255" Minimum="1" SmallChange="1" Value="128" Width="100" VerticalAlignment="Center"  />
+                            <Label Grid.Row="2" Grid.Column="0" Content="Blue subdivisions" />
+                            <Slider x:Name="BlueSubdivisionsSlider" Grid.Row="2" Grid.Column="1"  Maximum="255" Minimum="1" SmallChange="1" Value="128" Width="100" VerticalAlignment="Center"  />
+                            <Button Grid.Row="3" Grid.Column="1" Content="Apply" Click="Button_Click_21" />
+                        </Grid>
+                    </GroupBox>
                 </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Button Content="Contrast" Click="Button_Click_3" />
-                    <Button Grid.Column="1" Content="Load" Click="Button_Click_16"  />
-                </Grid>
-                <Button Grid.Row="3" Content="Gamma correction" Click="Button_Click_4" />
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="Kernels" Margin="381,10,0,0" HorizontalAlignment="Left" Width="153" Height="121" VerticalAlignment="Top">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Button Grid.Row="0" Content="Blur" Click="Button_Click_6" />
-                <Button Grid.Row="1" Content="Gaussian smoothing" Click="Button_Click_7" />
-                <Button Grid.Row="2" Content="Sharpen" Click="Button_Click_8"  />
-                <Button Grid.Row="3" Content="Edge detection" Click="Button_Click_9" />
-                <Button Grid.Row="4" Content="Emboss" Click="Button_Click_10" />
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="Filter editor" Margin="545,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="256" />
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <Canvas  Grid.Column="0" x:Name="PolylineCanvas" Height="256" Width="256" Background="Black" MouseMove="PolylineCanvas_MouseMove" MouseUp="PolylineCanvas_MouseUp" MouseLeave="PolylineCanvas_MouseLeave">
-                    <Polyline x:Name="polyline" Points="0,256 256,0" Stroke="White"/>
-                    <!-- Source: https://stackoverflow.com/a/41616789 -->
-                    <ItemsControl x:Name="Cock" ItemsSource="{Binding Points, ElementName=polyline, Mode=OneWay}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <Canvas/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemContainerStyle>
-                            <Style TargetType="ContentPresenter">
-                                <Setter Property="Canvas.Left" Value="{Binding X}"/>
-                                <Setter Property="Canvas.Top" Value="{Binding Y}"/>
-                            </Style>
-                        </ItemsControl.ItemContainerStyle>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Line Stroke="LightSteelBlue" StrokeThickness="8" StrokeStartLineCap="Round" StrokeEndLineCap="Round" MouseDown="Line_MouseDown" MouseUp="Line_MouseUp" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Canvas>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Content="Reset" Click="Button_Click_12" />
-                    <Button Grid.Row="1" Content="Add point" Click="Button_Click_13" />
-                    <Button Grid.Row="2" Content="Remove point" Click="Button_Click_17" />
-                    <Button Grid.Row="3" Content="Save" Click="Button_Click_18" />
-                </Grid>
-            </Grid>
-        </GroupBox>
-        <ListBox x:Name="SavedFilters" Margin="900,20,0,0" Width="200" Height="265"  HorizontalAlignment="Left" VerticalAlignment="Top" />
+            </TabItem>
+            <TabItem Header="Dithering">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
