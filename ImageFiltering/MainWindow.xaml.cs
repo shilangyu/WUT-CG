@@ -4,23 +4,18 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace ImageFiltering
-{
-    public partial class MainWindow : Window
-    {
+namespace ImageFiltering {
+    public partial class MainWindow : Window {
         SimdPixels? originalPixels;
         SimdPixels? pixels;
 
         Stack<SimdPixels> undo = new();
         Stack<SimdPixels> redo = new();
 
-        SimdPixels? Pixels
-        {
+        SimdPixels? Pixels {
             get => pixels;
-            set
-            {
-                if (pixels is not null)
-                {
+            set {
+                if (pixels is not null) {
                     redo.Clear();
                     undo.Push(pixels);
                 }
@@ -29,20 +24,16 @@ namespace ImageFiltering
             }
         }
 
-        public MainWindow()
-        {
+        public MainWindow() {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            var openFileDialog = new OpenFileDialog {
                 Filter = "Image (*.png, *jpg)|*.png;*.jpg"
             };
 
-            if (openFileDialog.ShowDialog() == true)
-            {
+            if (openFileDialog.ShowDialog() == true) {
                 var img = new BitmapImage(new(openFileDialog.FileName));
                 Pixels = new(img);
                 originalPixels = (SimdPixels)Pixels.Clone();
@@ -50,17 +41,14 @@ namespace ImageFiltering
             }
         }
 
-        private void Button_Click_11(object sender, RoutedEventArgs e)
-        {
+        private void Button_Click_11(object sender, RoutedEventArgs e) {
             if (pixels is null) return;
 
-            var saveFileDialog = new SaveFileDialog
-            {
+            var saveFileDialog = new SaveFileDialog {
                 Filter = "Image (*.png)|*.png"
             };
 
-            if (saveFileDialog.ShowDialog() == true)
-            {
+            if (saveFileDialog.ShowDialog() == true) {
                 using var fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
                 var encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(pixels.ToBitmap()));
@@ -68,8 +56,7 @@ namespace ImageFiltering
             }
         }
 
-        private void Button_Click_19(object sender, RoutedEventArgs e)
-        {
+        private void Button_Click_19(object sender, RoutedEventArgs e) {
             if (undo.Count == 0 || pixels is null) return;
 
             var ps = undo.Pop();
@@ -78,8 +65,7 @@ namespace ImageFiltering
             TransformedImage.Source = ps.ToBitmap();
         }
 
-        private void Button_Click_20(object sender, RoutedEventArgs e)
-        {
+        private void Button_Click_20(object sender, RoutedEventArgs e) {
             if (redo.Count == 0 || pixels is null) return;
 
             var ps = redo.Pop();
