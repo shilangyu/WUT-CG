@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltering {
     public class SimdPixels : ICloneable {
-        // RGBA normalized to the [0; 1] range
+        // (usually) RGBA normalized to the [0; 1] range
         private Vector4[] pixels;
         private readonly int stride;
         private readonly int width;
@@ -181,6 +181,47 @@ namespace ImageFiltering {
                 return clone;
             }
         }
+
+        public SimdPixels ToYCbCr() {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            var clone = (SimdPixels)Clone();
+
+            Parallel.For(0, height, (y, state) => {
+                for (int x = 0; x < width; x++) {
+                    var curr = this[x, y];
+                    clone[x, y] = new Vector4(
+                        0.299f * curr.X + 0.587f * curr.Y + 0.114f * curr.Z,
+                        0.5f - 0.168736f * curr.X - 0.331264f * curr.Y + 0.5f * curr.Z,
+                        0.5f + 0.5f * curr.X - 0.418688f * curr.Y - 0.081312f * curr.Z,
+                        curr.W);
+                }
+            });
+
+            sw.Stop();
+            Debug.WriteLine($"ToYCbCr: {sw.Elapsed}");
+
+            return clone;
+        }
+
+        public SimdPixels FromYCbCr() {
+            var clone = (SimdPixels)Clone();
+
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    var curr = this[x, y];
+                    clone[x, y] = new Vector4(
+                        curr.X + 1.402f * (curr.Z - 0.5f),
+                        curr.X - 0.34414f * (curr.Y - 0.5f) - 0.71414f * (curr.Z - 0.5f),
+                        curr.X + 1.772f * (curr.Y - 0.5f),
+                        curr.W);
+                }
+            }
+
+            return clone;
+        }
+
 
         public object Clone() {
             var clone = (SimdPixels)this.MemberwiseClone();

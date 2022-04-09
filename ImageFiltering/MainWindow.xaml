@@ -157,6 +157,7 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -185,6 +186,7 @@
                             </ComboBox>
 
                             <Button Grid.Row="4" Grid.Column="1" Content="Apply" Click="Button_Click_23" />
+                            <Button Grid.Row="5" Grid.Column="1" Content="YCbCr dithering" Click="Button_Click_24" />
                         </Grid>
                     </GroupBox>
                 </Grid>
