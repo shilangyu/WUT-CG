@@ -1,7 +1,7 @@
-import { css } from "lit";
+import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Lit2DCanvas } from "./Lit2DCanvas";
-import { Point } from "./Point";
+import { Point } from "./shapes/Point";
 
 @customElement("canvas-zoom")
 export class CanvasZoom extends Lit2DCanvas {
@@ -11,23 +11,24 @@ export class CanvasZoom extends Lit2DCanvas {
     }
   `;
 
-  @property({ type: String })
-  targetId!: string;
-
   @property({ type: Number })
   pixelWindow = 20;
 
   currPos = Point.origin;
   target!: HTMLCanvasElement;
 
-  override firstUpdated() {
+  override async firstUpdated() {
     super.firstUpdated();
-    this.target = document.getElementById(this.targetId) as HTMLCanvasElement;
 
-    this.canvas.getContext("2d")!.imageSmoothingEnabled = false;
+    // slot is not yet initialized, not sure what is a better way of handling this
+    queueMicrotask(() => {
+      this.target = this.querySelector("canvas") as HTMLCanvasElement;
 
-    this.target.addEventListener("mousemove", ({ offsetX, offsetY }) => {
-      this.currPos = new Point(offsetX, offsetY);
+      this.canvas.getContext("2d")!.imageSmoothingEnabled = false;
+
+      this.target.addEventListener("mousemove", ({ offsetX, offsetY }) => {
+        this.currPos = new Point(offsetX, offsetY);
+      });
     });
   }
 
@@ -51,6 +52,13 @@ export class CanvasZoom extends Lit2DCanvas {
       this.width,
       this.height
     );
+  }
+
+  override render() {
+    return html`
+      <slot></slot>
+      ${super.render()}
+    `;
   }
 }
 

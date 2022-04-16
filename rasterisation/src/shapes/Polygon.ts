@@ -1,5 +1,5 @@
-import { Point } from "../Point";
 import { toCssColor } from "./Color";
+import { Point } from "./Point";
 import { Shape } from "./Shape";
 
 export class Polygon extends Shape {
@@ -53,5 +53,9 @@ export class Polygon extends Shape {
     }
 
     ctx.stroke();
+  }
+
+  centerOfMass(): Point {
+    return Point.centerOfMass(this.points);
   }
 }

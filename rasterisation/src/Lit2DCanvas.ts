@@ -1,6 +1,6 @@
 import { html, LitElement } from "lit";
 import { property, query } from "lit/decorators.js";
-import { Point } from "./Point";
+import { Point } from "./shapes/Point";
 
 // based on: https://gist.github.com/rodydavis/d6014c94db07acac22523a41a7674f58
 

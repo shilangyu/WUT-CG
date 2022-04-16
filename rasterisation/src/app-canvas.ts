@@ -1,7 +1,7 @@
 import { customElement } from "lit/decorators.js";
 import { appState } from "./AppState";
 import { Lit2DCanvas } from "./Lit2DCanvas";
-import { Point } from "./Point";
+import { Point } from "./shapes/Point";
 import { Shape } from "./shapes/Shape";
 
 @customElement("app-canvas")
