@@ -52,9 +52,6 @@ export class CanvasZoom extends Lit2DCanvas {
       this.height
     );
   }
-
-  loop(_timestep: number) {}
-  onTap(_points: Point[]) {}
 }
 
 declare global {

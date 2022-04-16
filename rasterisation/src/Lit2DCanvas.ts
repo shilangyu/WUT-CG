@@ -66,9 +66,9 @@ export abstract class Lit2DCanvas extends LitElement {
     requestAnimationFrame((timestamp) => this._loop(timestamp));
   }
 
-  abstract loop(timestep: number): void;
+  loop(_timestep: number): void {}
 
   abstract draw(context: CanvasRenderingContext2D): void;
 
-  abstract onTap(points: Point[]): void;
+  onTap(_points: Point[]): void {}
 }

@@ -22,9 +22,9 @@ export class AppCanvas extends Lit2DCanvas {
     }
   }
 
-  loop(timestep: number) {}
+  override onTap(points: Point[]) {
+    super.onTap(points);
 
-  onTap(points: Point[]) {
     if (points.length === 0) {
       return;
     }
