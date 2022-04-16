@@ -163,7 +163,7 @@ namespace ImageFiltering {
                     for (var x = 0; x < width; x++) {
                         var pixel = this[x, y];
                         var i = levelsMinusOne * pixel;
-                        var cols = new Vector4((float)Math.Floor(i.X), (float)Math.Floor(i.Y), (float)Math.Floor(i.Z), 1);
+                        var cols = new Vector4((float)Math.Floor(i.X), (float)Math.Floor(i.Y), (float)Math.Floor(i.Z), i.W);
                         var frac = i - cols;
                         var threshold = ditherMatrix[x % n, y % n];
 
