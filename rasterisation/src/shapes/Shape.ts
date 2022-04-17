@@ -1,3 +1,4 @@
+import { Raster } from "../Raster";
 import { Color } from "./Color";
 import { Point } from "./Point";
 
@@ -10,7 +11,9 @@ export abstract class Shape {
   /// returns true if done drawing
   abstract addPoint(p: Point): boolean;
 
-  abstract draw(ctx: CanvasRenderingContext2D, antiAlias: boolean): void;
+  abstract draw(raster: Raster, antiAlias: boolean): void;
+
+  abstract ctxDraw(ctx: CanvasRenderingContext2D): void;
 
   abstract move(anchor: Point, offset: Point): void;
 }

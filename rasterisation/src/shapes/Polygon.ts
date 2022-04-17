@@ -1,3 +1,4 @@
+import { Raster } from "../Raster";
 import { toRgbHex } from "./Color";
 import { Point } from "./Point";
 import { Shape } from "./Shape";
@@ -35,8 +36,12 @@ export class Polygon extends Shape {
     return this.isClosed;
   }
 
-  // TODO: replace with manual rasterisation
-  draw(ctx: CanvasRenderingContext2D, _antiAlias: boolean): void {
+  draw(_raster: Raster, _antiAlias: boolean): void {
+    // TODO: this shit
+    throw new Error("unimplemented");
+  }
+
+  ctxDraw(ctx: CanvasRenderingContext2D): void {
     if (this.points.length === 0) {
       return;
     }

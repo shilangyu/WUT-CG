@@ -14,7 +14,7 @@ export class CanvasZoom extends Lit2DCanvas {
   @property({ type: Number })
   pixelWindow = 20;
 
-  currPos = Point.origin;
+  currPos = Point.zero;
   target!: HTMLCanvasElement;
 
   override async firstUpdated() {

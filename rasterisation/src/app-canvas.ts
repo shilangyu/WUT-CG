@@ -1,7 +1,9 @@
+import { html } from "lit";
 import { observeState } from "lit-element-state";
-import { customElement } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { appState } from "./AppState";
 import { Lit2DCanvas } from "./Lit2DCanvas";
+import { Raster } from "./Raster";
 import { Point } from "./shapes/Point";
 import { Shape } from "./shapes/Shape";
 
@@ -28,11 +30,17 @@ export class AppCanvas extends observeState(Lit2DCanvas) {
     ctx.fillRect(0, 0, this.width, this.height);
     ctx.restore();
 
+    const raster = new Raster(
+      ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
+    );
+
     for (const shape of [...appState.shapes, this.active]) {
       ctx.save();
-      shape?.draw(ctx, appState.antiAlias);
+      shape?.draw(raster, appState.antiAlias);
       ctx.restore();
     }
+
+    raster.paintOnto(ctx);
   }
 
   override onTap(points: Point[]) {

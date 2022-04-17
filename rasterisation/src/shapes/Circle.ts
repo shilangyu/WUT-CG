@@ -1,3 +1,4 @@
+import { Raster } from "../Raster";
 import { toRgbHex } from "./Color";
 import { Point } from "./Point";
 import { Shape } from "./Shape";
@@ -26,8 +27,12 @@ export class Circle extends Shape {
     return this.radius !== undefined;
   }
 
-  // TODO: replace with manual rasterisation
-  draw(ctx: CanvasRenderingContext2D, _antiAlias: boolean): void {
+  draw(_raster: Raster, _antiAlias: boolean): void {
+    // TODO: this shit
+    throw new Error("unimplemented");
+  }
+
+  ctxDraw(ctx: CanvasRenderingContext2D): void {
     if (this.center === undefined || this.radius === undefined) {
       return;
     }
