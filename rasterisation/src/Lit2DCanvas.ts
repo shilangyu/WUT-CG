@@ -23,11 +23,12 @@ export abstract class Lit2DCanvas extends LitElement {
       (e) => {
         e.preventDefault();
 
+        const { left, top } = this.canvas.getBoundingClientRect();
         const touches = e.touches;
         const points: Point[] = [];
         for (let i = 0; i < touches.length; i++) {
           const touch = touches[i];
-          points.push(new Point(touch.clientX, touch.clientY));
+          points.push(new Point(touch.clientX - left, touch.clientY - top));
         }
         this.onTap(points);
       },
@@ -39,9 +40,9 @@ export abstract class Lit2DCanvas extends LitElement {
       (e) => {
         e.preventDefault();
 
-        var { left, top } = this.canvas.getBoundingClientRect();
-        var x = e.clientX - left;
-        var y = e.clientY - top;
+        const { left, top } = this.canvas.getBoundingClientRect();
+        const x = e.clientX - left;
+        const y = e.clientY - top;
 
         this.onTap([new Point(x, y)]);
       },
