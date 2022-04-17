@@ -1,11 +1,19 @@
+import { LitState } from "lit-element-state";
 import { Polygon } from "./shapes/Polygon";
 import { Shape } from "./shapes/Shape";
 
 export type ShapeMode = "polygon" | "circle" | "line";
 
-export class AppState {
-  shapeMode: ShapeMode = "polygon";
-  antiAlias = false;
+export class AppState extends LitState {
+  static stateVars = {
+    shapeMode: "polygon",
+    antiAlias: false,
+    shapes: [],
+  };
+
+  shapeMode!: ShapeMode;
+  antiAlias!: boolean;
+  shapes!: Shape[];
 
   createCurrentShape(): Shape {
     switch (this.shapeMode) {

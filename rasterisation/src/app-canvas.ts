@@ -1,3 +1,4 @@
+import { observeState } from "lit-element-state";
 import { customElement } from "lit/decorators.js";
 import { appState } from "./AppState";
 import { Lit2DCanvas } from "./Lit2DCanvas";
@@ -5,8 +6,7 @@ import { Point } from "./shapes/Point";
 import { Shape } from "./shapes/Shape";
 
 @customElement("app-canvas")
-export class AppCanvas extends Lit2DCanvas {
-  shapes: Shape[] = [];
+export class AppCanvas extends observeState(Lit2DCanvas) {
   active?: Shape;
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -15,9 +15,9 @@ export class AppCanvas extends Lit2DCanvas {
     ctx.fillRect(0, 0, this.width, this.height);
     ctx.restore();
 
-    for (const shape of this.shapes) {
+    for (const shape of [...appState.shapes, this.active]) {
       ctx.save();
-      shape.draw(ctx);
+      shape?.draw(ctx);
       ctx.restore();
     }
   }
@@ -33,12 +33,12 @@ export class AppCanvas extends Lit2DCanvas {
 
     if (!this.active) {
       this.active = appState.createCurrentShape();
-      this.shapes.push(this.active);
     }
 
     const isDone = this.active.addPoint(point);
 
     if (isDone) {
+      appState.shapes = [...appState.shapes, this.active];
       this.active = undefined;
     }
   }

@@ -8,7 +8,8 @@
     "build:gh-pages": "tsc && vite build --base=/WUT-CG/"
   },
   "dependencies": {
-    "lit": "^2.2.2"
+    "lit": "^2.2.2",
+    "lit-element-state": "^1.7.0"
   },
   "devDependencies": {
     "typescript": "^4.6.3",

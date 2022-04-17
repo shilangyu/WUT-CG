@@ -1,9 +1,10 @@
 import { html, LitElement } from "lit";
+import { observeState } from "lit-element-state";
 import { customElement } from "lit/decorators.js";
 import { appState, ShapeMode } from "../AppState";
 
 @customElement("shape-radio")
-export class ShapeRadio extends LitElement {
+export class ShapeRadio extends observeState(LitElement) {
   override render() {
     return html`
       <div>
