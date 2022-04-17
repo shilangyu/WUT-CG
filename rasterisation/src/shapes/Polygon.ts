@@ -1,4 +1,4 @@
-import { toCssColor } from "./Color";
+import { toRgbHex } from "./Color";
 import { Point } from "./Point";
 import { Shape } from "./Shape";
 
@@ -41,7 +41,7 @@ export class Polygon extends Shape {
       return;
     }
 
-    ctx.strokeStyle = toCssColor(this.color);
+    ctx.strokeStyle = toRgbHex(this.color);
     ctx.lineWidth = this.thickness;
     ctx.beginPath();
 

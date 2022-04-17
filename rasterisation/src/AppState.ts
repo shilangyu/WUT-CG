@@ -1,4 +1,5 @@
 import { LitState } from "lit-element-state";
+import { Color } from "./shapes/Color";
 import { Polygon } from "./shapes/Polygon";
 import { Shape } from "./shapes/Shape";
 
@@ -24,6 +25,13 @@ export class AppState extends LitState<typeof AppState.stateVars> {
   changeSelectedShapeThickness(thickness: number) {
     if (this.selectedShape) {
       this.selectedShape.thickness = thickness;
+      this.shapes = [...this.shapes];
+    }
+  }
+
+  changeSelectedShapeColor(color: Color) {
+    if (this.selectedShape) {
+      this.selectedShape.color = color;
       this.shapes = [...this.shapes];
     }
   }
