@@ -1,6 +1,7 @@
 import { LitState } from "lit-element-state";
 import { Circle } from "./shapes/Circle";
 import { Color } from "./shapes/Color";
+import { Line } from "./shapes/Line";
 import { Polygon } from "./shapes/Polygon";
 import { Shape } from "./shapes/Shape";
 
@@ -52,7 +53,7 @@ export class AppState extends LitState<typeof AppState.stateVars> {
       case "polygon":
         return new Polygon();
       case "line":
-        throw new Error("unimplemented");
+        return new Line();
       case "circle":
         return new Circle();
     }
