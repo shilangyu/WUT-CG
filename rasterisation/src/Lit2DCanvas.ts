@@ -104,7 +104,7 @@ export abstract class Lit2DCanvas extends LitElement {
     requestAnimationFrame((timestamp) => this._loop(timestamp));
   }
 
-  private touchOffset(event: Touch) {
+  protected touchOffset(event: Touch) {
     const { left, top } = this.canvas.getBoundingClientRect();
     return new Point(event.clientX - left, event.clientY - top);
   }

@@ -29,6 +29,11 @@ export class CanvasZoom extends Lit2DCanvas {
       this.target.addEventListener("mousemove", ({ offsetX, offsetY }) => {
         this.currPos = new Point(offsetX, offsetY);
       });
+      this.target.addEventListener("touchmove", ({ touches }) => {
+        if (touches.length > 0) {
+          this.currPos = this.touchOffset(touches[0]);
+        }
+      });
     });
   }
 
