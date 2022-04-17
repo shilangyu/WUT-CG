@@ -2,6 +2,7 @@ import { LitState } from "lit-element-state";
 import { Circle } from "./shapes/Circle";
 import { Color } from "./shapes/Color";
 import { Line } from "./shapes/Line";
+import { Point } from "./shapes/Point";
 import { Polygon } from "./shapes/Polygon";
 import { Shape } from "./shapes/Shape";
 
@@ -58,10 +59,47 @@ export class AppState extends LitState<typeof AppState.stateVars> {
         return new Circle();
     }
   }
+
+  static stressTest() {
+    const state = new AppState();
+    const [nL, nP, nC] = [3000, 3000, 3000];
+
+    for (let i = 0; i < nL; i++) {
+      const l = new Line();
+      l.addPoint(new Point(randInt(), randInt()));
+      l.addPoint(new Point(randInt(), randInt()));
+
+      state.shapes.push(l);
+    }
+    for (let i = 0; i < nP; i++) {
+      const p = new Polygon();
+      const f = new Point(randInt(), randInt());
+      p.addPoint(f) ||
+        p.addPoint(new Point(randInt(), randInt())) ||
+        p.addPoint(new Point(randInt(), randInt())) ||
+        p.addPoint(new Point(randInt(), randInt())) ||
+        p.addPoint(f);
+
+      state.shapes.push(p);
+    }
+    for (let i = 0; i < nC; i++) {
+      const c = new Circle();
+      c.addPoint(new Point(randInt(), randInt()));
+      c.addPoint(new Point(randInt(), randInt()));
+
+      state.shapes.push(c);
+    }
+
+    return state;
+  }
 }
 
 export const appState = new AppState();
 
 if (import.meta.env.DEV) {
   (window as any).appState = appState;
+}
+
+function randInt({ min, max } = { min: 0, max: 1000 }) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
