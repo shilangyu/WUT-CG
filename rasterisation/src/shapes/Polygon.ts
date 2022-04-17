@@ -36,7 +36,7 @@ export class Polygon extends Shape {
   }
 
   // TODO: replace with manual rasterisation
-  draw(ctx: CanvasRenderingContext2D): void {
+  draw(ctx: CanvasRenderingContext2D, _antiAlias: boolean): void {
     if (this.points.length === 0) {
       return;
     }

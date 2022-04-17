@@ -10,7 +10,7 @@ export abstract class Shape {
   /// returns true if done drawing
   abstract addPoint(p: Point): boolean;
 
-  abstract draw(ctx: CanvasRenderingContext2D): void;
+  abstract draw(ctx: CanvasRenderingContext2D, antiAlias: boolean): void;
 
   abstract move(anchor: Point, offset: Point): void;
 }

@@ -5,6 +5,7 @@ import "./app-canvas.ts";
 import "./app-root.ts";
 import { appState } from "./AppState";
 import "./canvas-zoom.ts";
+import "./components/antialias-checkbox.ts";
 import "./components/manage-shape.ts";
 import "./components/pick-shape.ts";
 import "./components/save-shapes.ts";
@@ -19,6 +20,7 @@ export class AppRoot extends observeState(LitElement) {
         <shape-radio></shape-radio>
         <save-shapes></save-shapes>
         <pick-shape></pick-shape>
+        <antialias-checkbox></antialias-checkbox>
         <button @click=${() => appState.deleteAllShapes()}>
           Remove all shapes
         </button>
