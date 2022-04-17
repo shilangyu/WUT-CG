@@ -11,6 +11,10 @@ export class Point {
     return (this.x - other.x) ** 2 + (this.y - other.y) ** 2;
   }
 
+  magnitude(): number {
+    return this.distance(Point.origin);
+  }
+
   add(other: Point) {
     return new Point(this.x + other.x, this.y + other.y);
   }
@@ -21,6 +25,14 @@ export class Point {
 
   div(scalar: number) {
     return new Point(this.x / scalar, this.y / scalar);
+  }
+
+  eq(other: Point) {
+    return this.x === other.x && this.y === other.y;
+  }
+
+  dot(other: Point) {
+    return this.x * other.x + this.y * other.y;
   }
 
   static average(...points: Point[]) {

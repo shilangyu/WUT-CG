@@ -62,8 +62,10 @@ export abstract class Lit2DCanvas extends LitElement {
       }
 
       const curr = new Point(offsetX, offsetY);
-      this.onMove(prev, curr.sub(prev));
-      prev = curr;
+      if (!curr.eq(prev)) {
+        this.onMove(prev, curr.sub(prev));
+        prev = curr;
+      }
     });
   }
 
