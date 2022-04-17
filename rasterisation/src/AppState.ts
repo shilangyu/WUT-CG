@@ -21,6 +21,13 @@ export class AppState extends LitState<typeof AppState.stateVars> {
     return this.shapes.find((e) => e.id === this.selectedShapeId);
   }
 
+  changeSelectedShapeThickness(thickness: number) {
+    if (this.selectedShape) {
+      this.selectedShape.thickness = thickness;
+      this.shapes = [...this.shapes];
+    }
+  }
+
   createCurrentShape(): Shape {
     switch (this.shapeMode) {
       case "polygon":
