@@ -19,6 +19,9 @@ export class AppRoot extends observeState(LitElement) {
         <shape-radio></shape-radio>
         <save-shapes></save-shapes>
         <pick-shape></pick-shape>
+        <button @click=${() => appState.deleteAllShapes()}>
+          Remove all shapes
+        </button>
         ${appState.selectedShapeId
           ? html` <manage-shape></manage-shape> `
           : null}

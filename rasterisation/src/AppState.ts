@@ -41,6 +41,11 @@ export class AppState extends LitState<typeof AppState.stateVars> {
     this.selectedShapeId = undefined;
   }
 
+  deleteAllShapes() {
+    this.selectedShapeId = undefined;
+    this.shapes = [];
+  }
+
   createCurrentShape(): Shape {
     switch (this.shapeMode) {
       case "polygon":
