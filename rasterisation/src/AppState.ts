@@ -28,6 +28,11 @@ export class AppState extends LitState<typeof AppState.stateVars> {
     }
   }
 
+  deleteSelectedShape() {
+    this.shapes = this.shapes.filter((e) => e.id !== this.selectedShapeId);
+    this.selectedShapeId = undefined;
+  }
+
   createCurrentShape(): Shape {
     switch (this.shapeMode) {
       case "polygon":
@@ -40,6 +45,8 @@ export class AppState extends LitState<typeof AppState.stateVars> {
   }
 }
 
-// lit-element's component communication is absolutely horrendous.
-// I will be using a singleton, even though I hate it.
 export const appState = new AppState();
+
+if (import.meta.env.DEV) {
+  (window as any).appState = appState;
+}

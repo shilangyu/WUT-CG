@@ -5,10 +5,10 @@ import "./app-canvas.ts";
 import "./app-root.ts";
 import { appState } from "./AppState";
 import "./canvas-zoom.ts";
+import "./components/manage-shape.ts";
 import "./components/pick-shape.ts";
 import "./components/save-shapes.ts";
 import "./components/shape-radio.ts";
-import "./components/thickness-slider.ts";
 
 @customElement("app-root")
 export class AppRoot extends observeState(LitElement) {
@@ -20,7 +20,7 @@ export class AppRoot extends observeState(LitElement) {
         <save-shapes></save-shapes>
         <pick-shape></pick-shape>
         ${appState.selectedShapeId
-          ? html` <thickness-slider></thickness-slider> `
+          ? html` <manage-shape></manage-shape> `
           : null}
       </canvas-zoom>
     `;
