@@ -4,16 +4,22 @@ import { Shape } from "./shapes/Shape";
 
 export type ShapeMode = "polygon" | "circle" | "line";
 
-export class AppState extends LitState {
+export class AppState extends LitState<typeof AppState.stateVars> {
   static stateVars = {
-    shapeMode: "polygon",
+    shapeMode: "polygon" as ShapeMode,
     antiAlias: false,
-    shapes: [],
+    shapes: [] as Shape[],
+    selectedShapeId: undefined as string | undefined,
   };
 
   shapeMode!: ShapeMode;
   antiAlias!: boolean;
   shapes!: Shape[];
+  selectedShapeId?: string;
+
+  get selectedShape() {
+    return this.shapes.find((e) => e.id === this.selectedShapeId);
+  }
 
   createCurrentShape(): Shape {
     switch (this.shapeMode) {

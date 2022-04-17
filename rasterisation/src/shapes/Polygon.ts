@@ -7,9 +7,10 @@ export class Polygon extends Shape {
   private isClosed = false;
 
   static readonly closeThreshold = 10;
+  private static num = 1;
 
   constructor() {
-    super("Polygon");
+    super(`Polygon#${Polygon.num++}`);
   }
 
   addPoint(p: Point) {

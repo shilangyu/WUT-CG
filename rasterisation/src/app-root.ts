@@ -4,6 +4,7 @@ import { customElement } from "lit/decorators.js";
 import "./app-canvas.ts";
 import "./app-root.ts";
 import "./canvas-zoom.ts";
+import "./components/pick-shape.ts";
 import "./components/save-shapes.ts";
 import "./components/shape-radio.ts";
 
@@ -15,6 +16,7 @@ export class AppRoot extends observeState(LitElement) {
         <app-canvas width="700" height="600" />
         <shape-radio></shape-radio>
         <save-shapes></save-shapes>
+        <pick-shape></pick-shape>
       </canvas-zoom>
     `;
   }

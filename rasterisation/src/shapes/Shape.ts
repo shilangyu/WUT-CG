@@ -5,7 +5,7 @@ export abstract class Shape {
   color: Color = [0, 0, 0];
   thickness = 1;
 
-  constructor(public tag: string) {}
+  constructor(public id: string) {}
 
   /// returns true if done drawing
   abstract addPoint(p: Point): boolean;

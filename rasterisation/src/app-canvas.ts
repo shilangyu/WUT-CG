@@ -9,6 +9,19 @@ import { Shape } from "./shapes/Shape";
 export class AppCanvas extends observeState(Lit2DCanvas) {
   active?: Shape;
 
+  override firstUpdated(): void {
+    super.firstUpdated();
+
+    appState.addObserver(() => {
+      if (appState.selectedShapeId !== undefined) {
+        this.active = undefined;
+      }
+    }, ["selectedShapeId"]);
+    appState.addObserver(() => {
+      this.active = undefined;
+    }, ["shapeMode"]);
+  }
+
   draw(ctx: CanvasRenderingContext2D) {
     ctx.save();
     ctx.fillStyle = "#cccccc";
