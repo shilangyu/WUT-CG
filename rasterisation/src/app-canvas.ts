@@ -38,7 +38,7 @@ export class AppCanvas extends observeState(Lit2DCanvas) {
   override onTap(points: Point[]) {
     super.onTap(points);
 
-    if (points.length === 0) {
+    if (appState.selectedShapeId || points.length === 0) {
       return;
     }
 
@@ -54,6 +54,10 @@ export class AppCanvas extends observeState(Lit2DCanvas) {
       appState.shapes = [...appState.shapes, this.active];
       this.active = undefined;
     }
+  }
+
+  override onMove(anchor: Point, offset: Point): void {
+    appState.selectedShape?.move(anchor, offset);
   }
 
   override createRenderRoot() {

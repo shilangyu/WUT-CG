@@ -22,7 +22,10 @@ export class Polygon extends Shape {
       this.points.push(p);
     } else {
       // check if we are close to the first point
-      if (this.points[0].distance(p) < Polygon.closeThreshold) {
+      if (
+        this.points.length >= 3 &&
+        this.points[0].distance(p) < Polygon.closeThreshold
+      ) {
         this.isClosed = true;
       } else {
         this.points.push(p);
@@ -56,7 +59,46 @@ export class Polygon extends Shape {
     ctx.stroke();
   }
 
-  centerOfMass(): Point {
-    return Point.centerOfMass(this.points);
+  move(anchor: Point, offset: Point): void {
+    const points = {
+      center: Point.average(...this.points),
+      vertices: this.points,
+      edges: this.points.map((e, i) =>
+        Point.average(e, this.points[(i + 1) % this.points.length])
+      ),
+    };
+
+    const distances = {
+      center: points.center.distanceSq(anchor),
+      vertices: points.vertices.map((e) => e.distanceSq(anchor)),
+      edges: points.edges.map((e) => e.distanceSq(anchor)),
+    };
+
+    const min = Math.min(
+      distances.center,
+      ...distances.vertices,
+      ...distances.edges
+    );
+
+    if (min === distances.center) {
+      this.points = this.points.map((e) => e.add(offset));
+      return;
+    }
+
+    for (let i = 0; i < distances.vertices.length; i++) {
+      if (min === distances.vertices[i]) {
+        this.points[i] = this.points[i].add(offset);
+        return;
+      }
+    }
+
+    for (let i = 0; i < distances.edges.length; i++) {
+      if (min === distances.edges[i]) {
+        this.points[i] = this.points[i].add(offset);
+        this.points[(i + 1) % this.points.length] =
+          this.points[(i + 1) % this.points.length].add(offset);
+        return;
+      }
+    }
   }
 }

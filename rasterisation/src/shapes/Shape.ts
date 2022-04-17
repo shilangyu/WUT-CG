@@ -12,5 +12,5 @@ export abstract class Shape {
 
   abstract draw(ctx: CanvasRenderingContext2D): void;
 
-  abstract centerOfMass(): Point;
+  abstract move(anchor: Point, offset: Point): void;
 }

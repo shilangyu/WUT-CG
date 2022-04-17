@@ -47,6 +47,24 @@ export abstract class Lit2DCanvas extends LitElement {
       },
       false
     );
+
+    // TODO: add touch support
+    let prev: Point | undefined = undefined;
+    this.canvas.addEventListener("mousedown", ({ offsetX, offsetY }) => {
+      prev = new Point(offsetX, offsetY);
+    });
+    this.canvas.addEventListener("mouseup", () => {
+      prev = undefined;
+    });
+    this.canvas.addEventListener("mousemove", ({ offsetX, offsetY }) => {
+      if (prev === undefined) {
+        return;
+      }
+
+      const curr = new Point(offsetX, offsetY);
+      this.onMove(prev, curr.sub(prev));
+      prev = curr;
+    });
   }
 
   _lastRender = 0;
@@ -71,4 +89,5 @@ export abstract class Lit2DCanvas extends LitElement {
   abstract draw(context: CanvasRenderingContext2D): void;
 
   onTap(_points: Point[]): void {}
+  onMove(_anchor: Point, _offset: Point): void {}
 }
