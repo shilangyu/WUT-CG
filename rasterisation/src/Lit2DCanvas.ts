@@ -9,6 +9,11 @@ export abstract class Lit2DCanvas extends LitElement {
   @property({ type: Number }) width = 400;
   @property({ type: Number }) height = 400;
 
+  loop(_timestep: number): void {}
+  abstract draw(context: CanvasRenderingContext2D): void;
+  onTap(_points: Point[]): void {}
+  onMove(_anchor: Point, _offset: Point): void {}
+
   override render() {
     return html`
       <canvas id="base" width=${this.width} height=${this.height}></canvas>
@@ -23,12 +28,10 @@ export abstract class Lit2DCanvas extends LitElement {
       (e) => {
         e.preventDefault();
 
-        const { left, top } = this.canvas.getBoundingClientRect();
         const touches = e.touches;
         const points: Point[] = [];
         for (let i = 0; i < touches.length; i++) {
-          const touch = touches[i];
-          points.push(new Point(touch.clientX - left, touch.clientY - top));
+          points.push(this.touchOffset(touches[i]));
         }
         this.onTap(points);
       },
@@ -40,21 +43,24 @@ export abstract class Lit2DCanvas extends LitElement {
       (e) => {
         e.preventDefault();
 
-        const { left, top } = this.canvas.getBoundingClientRect();
-        const x = e.clientX - left;
-        const y = e.clientY - top;
-
-        this.onTap([new Point(x, y)]);
+        this.onTap([new Point(e.offsetX, e.offsetY)]);
       },
       false
     );
 
-    // TODO: add touch support
     let prev: Point | undefined = undefined;
+    this.canvas.addEventListener("touchstart", ({ touches }) => {
+      if (touches.length > 0) {
+        prev = this.touchOffset(touches[0]);
+      }
+    });
     this.canvas.addEventListener("mousedown", ({ offsetX, offsetY }) => {
       prev = new Point(offsetX, offsetY);
     });
     this.canvas.addEventListener("mouseup", () => {
+      prev = undefined;
+    });
+    this.canvas.addEventListener("touchend", () => {
       prev = undefined;
     });
     this.canvas.addEventListener("mousemove", ({ offsetX, offsetY }) => {
@@ -68,13 +74,24 @@ export abstract class Lit2DCanvas extends LitElement {
         prev = curr;
       }
     });
+    this.canvas.addEventListener("touchmove", ({ touches }) => {
+      if (prev === undefined || touches.length === 0) {
+        return;
+      }
+
+      const curr = this.touchOffset(touches[0]);
+      if (!curr.eq(prev)) {
+        this.onMove(prev, curr.sub(prev));
+        prev = curr;
+      }
+    });
   }
 
-  _lastRender = 0;
+  private lastRender = 0;
   private _loop(timestamp: number) {
-    const timestep = timestamp - this._lastRender;
+    const timestep = timestamp - this.lastRender;
     this.loop(timestep);
-    this._lastRender = timestamp;
+    this.lastRender = timestamp;
 
     const ctx = this.canvas.getContext("2d");
     if (ctx) {
@@ -87,10 +104,8 @@ export abstract class Lit2DCanvas extends LitElement {
     requestAnimationFrame((timestamp) => this._loop(timestamp));
   }
 
-  loop(_timestep: number): void {}
-
-  abstract draw(context: CanvasRenderingContext2D): void;
-
-  onTap(_points: Point[]): void {}
-  onMove(_anchor: Point, _offset: Point): void {}
+  private touchOffset(event: Touch) {
+    const { left, top } = this.canvas.getBoundingClientRect();
+    return new Point(event.clientX - left, event.clientY - top);
+  }
 }
