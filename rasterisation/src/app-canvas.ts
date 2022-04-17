@@ -63,6 +63,26 @@ export class AppCanvas extends observeState(Lit2DCanvas) {
   override createRenderRoot() {
     return this;
   }
+
+  private fpss: number[] = new Array(60).fill(0);
+  private fpsIndex = 0;
+  @state() fps = 0;
+
+  override loop(timestep: number): void {
+    if (this.fpsIndex === this.fpss.length) {
+      this.fps = this.fpss.reduce((a, b) => a + b) / this.fpss.length;
+      this.fpsIndex = 0;
+    }
+
+    this.fpss[this.fpsIndex++] = 1000 / timestep;
+  }
+
+  override render() {
+    return html`
+      ${super.render()}
+      <span>fps: ${this.fps.toFixed(1)}</span>
+    `;
+  }
 }
 
 declare global {
