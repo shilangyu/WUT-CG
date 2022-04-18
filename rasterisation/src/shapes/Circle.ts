@@ -29,7 +29,6 @@ export class Circle extends Shape {
 
   // Midpoint Circle Algorithm using only additions extended to all octants
   draw(raster: Raster, _antiAlias: boolean): void {
-    // TODO: simplify
     // TODO: optimize
     if (this.center === undefined || this.radius === undefined) {
       return;
@@ -47,6 +46,10 @@ export class Circle extends Shape {
       raster.set(this.center.add(pos.neg()), this.color);
       raster.set(this.center.add(pos.negX()), this.color);
       raster.set(this.center.add(pos.negY()), this.color);
+      raster.set(this.center.add(new Point(pos.y, pos.x)), this.color);
+      raster.set(this.center.add(new Point(-pos.y, pos.x)), this.color);
+      raster.set(this.center.add(new Point(pos.y, -pos.x)), this.color);
+      raster.set(this.center.add(new Point(-pos.y, -pos.x)), this.color);
       if (d < 0) {
         d += dE;
         dE += 2;
@@ -60,30 +63,6 @@ export class Circle extends Shape {
 
       pos = pos.add(new Point(1, 0));
     } while (pos.y >= pos.x);
-
-    dE = 3;
-    dSE = 5 - 2 * r;
-    d = 1 - r;
-    pos = new Point(r, 0);
-
-    do {
-      raster.set(this.center.add(pos), this.color);
-      raster.set(this.center.add(pos.neg()), this.color);
-      raster.set(this.center.add(pos.negX()), this.color);
-      raster.set(this.center.add(pos.negY()), this.color);
-      if (d < 0) {
-        d += dE;
-        dE += 2;
-        dSE += 2;
-      } else {
-        d += dSE;
-        dE += 2;
-        dSE += 4;
-        pos = pos.add(new Point(-1, 0));
-      }
-
-      pos = pos.add(new Point(0, 1));
-    } while (pos.x >= pos.y);
   }
 
   ctxDraw(ctx: CanvasRenderingContext2D): void {
