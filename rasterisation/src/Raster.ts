@@ -9,6 +9,10 @@ export class Raster {
   }
 
   set(pos: Point, color: Color) {
+    // TODO: optimize this check
+    if (pos.x < 0 || pos.x >= this.source.width) {
+      return;
+    }
     const i = this.rootIndex(pos.x, pos.y);
 
     [this.source.data[i], this.source.data[i + 1], this.source.data[i + 2]] =

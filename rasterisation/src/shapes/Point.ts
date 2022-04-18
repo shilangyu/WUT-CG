@@ -36,6 +36,14 @@ export class Point {
     return new Point(-this.x, -this.y);
   }
 
+  negX() {
+    return new Point(-this.x, this.y);
+  }
+
+  negY() {
+    return new Point(this.x, -this.y);
+  }
+
   dot(other: Point) {
     return this.x * other.x + this.y * other.y;
   }

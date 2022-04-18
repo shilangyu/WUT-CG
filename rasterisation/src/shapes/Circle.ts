@@ -27,9 +27,63 @@ export class Circle extends Shape {
     return this.radius !== undefined;
   }
 
-  draw(_raster: Raster, _antiAlias: boolean): void {
-    // TODO: this shit
-    throw new Error("unimplemented");
+  // Midpoint Circle Algorithm using only additions extended to all octants
+  draw(raster: Raster, _antiAlias: boolean): void {
+    // TODO: simplify
+    // TODO: optimize
+    if (this.center === undefined || this.radius === undefined) {
+      return;
+    }
+
+    const r = Math.round(this.radius);
+
+    let dE = 3;
+    let dSE = 5 - 2 * r;
+    let d = 1 - r;
+    let pos = new Point(0, r);
+
+    do {
+      raster.set(this.center.add(pos), this.color);
+      raster.set(this.center.add(pos.neg()), this.color);
+      raster.set(this.center.add(pos.negX()), this.color);
+      raster.set(this.center.add(pos.negY()), this.color);
+      if (d < 0) {
+        d += dE;
+        dE += 2;
+        dSE += 2;
+      } else {
+        d += dSE;
+        dE += 2;
+        dSE += 4;
+        pos = pos.add(new Point(0, -1));
+      }
+
+      pos = pos.add(new Point(1, 0));
+    } while (pos.y >= pos.x);
+
+    dE = 3;
+    dSE = 5 - 2 * r;
+    d = 1 - r;
+    pos = new Point(r, 0);
+
+    do {
+      raster.set(this.center.add(pos), this.color);
+      raster.set(this.center.add(pos.neg()), this.color);
+      raster.set(this.center.add(pos.negX()), this.color);
+      raster.set(this.center.add(pos.negY()), this.color);
+      if (d < 0) {
+        d += dE;
+        dE += 2;
+        dSE += 2;
+      } else {
+        d += dSE;
+        dE += 2;
+        dSE += 4;
+        pos = pos.add(new Point(-1, 0));
+      }
+
+      pos = pos.add(new Point(0, 1));
+    } while (pos.x >= pos.y);
   }
 
   ctxDraw(ctx: CanvasRenderingContext2D): void {

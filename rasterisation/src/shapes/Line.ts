@@ -25,6 +25,7 @@ export class Line extends Shape {
     return this.p2 !== undefined;
   }
 
+  // Symmetric Midpoint Line Algorithm extended to all octants
   draw(raster: Raster, _antiAlias: boolean): void {
     // TODO: simplify
     // TODO: optimize
