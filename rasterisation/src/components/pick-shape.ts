@@ -15,7 +15,7 @@ export class PickShape extends observeState(LitElement) {
           value=""
           .selected=${live(appState.selectedShapeId === undefined)}
         >
-          Drawing mode
+          --Drawing--
         </option>
         ${appState.shapes.map(
           (e) =>

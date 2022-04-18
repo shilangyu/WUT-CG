@@ -7,16 +7,19 @@ import { Polygon } from "./shapes/Polygon";
 import { Shape } from "./shapes/Shape";
 
 export type ShapeMode = "polygon" | "circle" | "line";
+export type DrawingMethod = "context" | "manual";
 
 export class AppState extends LitState<typeof AppState.stateVars> {
   static stateVars = {
-    shapeMode: "polygon" as ShapeMode,
+    shapeMode: "line" as ShapeMode,
+    drawingMethod: "context" as DrawingMethod,
     antiAlias: false,
     shapes: [] as Shape[],
     selectedShapeId: undefined as string | undefined,
   };
 
   shapeMode!: ShapeMode;
+  drawingMethod!: DrawingMethod;
   antiAlias!: boolean;
   shapes!: Shape[];
   selectedShapeId?: string;

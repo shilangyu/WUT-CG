@@ -30,17 +30,29 @@ export class AppCanvas extends observeState(Lit2DCanvas) {
     ctx.fillRect(0, 0, this.width, this.height);
     ctx.restore();
 
-    const raster = new Raster(
-      ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
-    );
+    switch (appState.drawingMethod) {
+      case "context":
+        for (const shape of [...appState.shapes, this.active]) {
+          ctx.save();
+          shape?.ctxDraw(ctx);
+          ctx.restore();
+        }
+        break;
 
-    for (const shape of [...appState.shapes, this.active]) {
-      ctx.save();
-      shape?.draw(raster, appState.antiAlias);
-      ctx.restore();
+      case "manual":
+        const raster = new Raster(
+          ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
+        );
+
+        for (const shape of [...appState.shapes, this.active]) {
+          ctx.save();
+          shape?.draw(raster, appState.antiAlias);
+          ctx.restore();
+        }
+
+        raster.paintOnto(ctx);
+        break;
     }
-
-    raster.paintOnto(ctx);
   }
 
   override onTap(points: Point[]) {
