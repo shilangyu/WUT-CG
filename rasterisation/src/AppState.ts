@@ -68,9 +68,10 @@ export class AppState extends LitState<typeof AppState.stateVars> {
     const [nL, nP, nC] = [3000, 3000, 3000];
 
     for (let i = 0; i < nL; i++) {
-      const l = new Line();
-      l.addPoint(new Point(randInt(), randInt()));
-      l.addPoint(new Point(randInt(), randInt()));
+      const l = new Line(
+        new Point(randInt(), randInt()),
+        new Point(randInt(), randInt())
+      );
 
       state.shapes.push(l);
     }

@@ -1,5 +1,6 @@
 import { Raster } from "../Raster";
 import { toRgbHex } from "./Color";
+import { Line } from "./Line";
 import { Point } from "./Point";
 import { Shape } from "./Shape";
 
@@ -36,9 +37,23 @@ export class Polygon extends Shape {
     return this.isClosed;
   }
 
-  draw(_raster: Raster, _antiAlias: boolean): void {
-    // TODO: this shit
-    throw new Error("unimplemented");
+  draw(raster: Raster, antiAlias: boolean): void {
+    // TODO: optimize
+    let lines = this.points.map((e, i) => {
+      const line = new Line(e, this.points[(i + 1) % this.points.length]);
+      line.color = this.color;
+      line.thickness = this.thickness;
+
+      return line;
+    });
+
+    if (!this.isClosed) {
+      lines = lines.slice(0, -1);
+    }
+
+    for (const line of lines) {
+      line.draw(raster, antiAlias);
+    }
   }
 
   ctxDraw(ctx: CanvasRenderingContext2D): void {

@@ -4,13 +4,10 @@ import { Point } from "./Point";
 import { Shape } from "./Shape";
 
 export class Line extends Shape {
-  private p1?: Point = undefined;
-  private p2?: Point = undefined;
-
   static readonly closeThreshold = 10;
   private static num = 1;
 
-  constructor() {
+  constructor(private p1?: Point, private p2?: Point) {
     super(`Line#${Line.num++}`);
   }
 
