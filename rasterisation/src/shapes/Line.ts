@@ -1,3 +1,4 @@
+import { Raster } from "../Raster";
 import { toRgbHex } from "./Color";
 import { Point } from "./Point";
 import { Shape } from "./Shape";
@@ -27,8 +28,65 @@ export class Line extends Shape {
     return this.p2 !== undefined;
   }
 
-  // TODO: replace with manual rasterisation
-  draw(ctx: CanvasRenderingContext2D, _antiAlias: boolean): void {
+  draw(raster: Raster, _antiAlias: boolean): void {
+    // TODO: this shit
+    if (this.p1 === undefined || this.p2 === undefined) {
+      return;
+    }
+
+    const [p1, p2] =
+      this.p1.x < this.p2.x ? [this.p1, this.p2] : [this.p2, this.p1];
+    const delta = p2.sub(p1);
+    const dE = 2 * delta.y;
+    const dNE = 2 * (delta.y - delta.x);
+    const dSE = 2 * (delta.y + delta.x);
+    let f = p1;
+    let b = p2;
+
+    if (p1.y < p2.y) {
+      const fNE = new Point(0, 1);
+      const bNE = fNE.neg();
+
+      let d = 2 * delta.y - delta.x;
+
+      do {
+        raster.set(f, this.color);
+        raster.set(b, this.color);
+
+        f = f.add(new Point(1, 0));
+        b = b.add(new Point(-1, 0));
+        if (d < 0) {
+          d += dE;
+        } else {
+          d += dNE;
+          f = f.add(fNE);
+          b = b.add(bNE);
+        }
+      } while (f.x <= b.x);
+    } else {
+      const fSE = new Point(0, -1);
+      const bSE = fSE.neg();
+
+      let d = 2 * delta.y + delta.x;
+
+      do {
+        raster.set(f, this.color);
+        raster.set(b, this.color);
+
+        f = f.add(new Point(1, 0));
+        b = b.add(new Point(-1, 0));
+        if (d < 0) {
+          d += dSE;
+          f = f.add(fSE);
+          b = b.add(bSE);
+        } else {
+          d += dE;
+        }
+      } while (f.x <= b.x);
+    }
+  }
+
+  ctxDraw(ctx: CanvasRenderingContext2D) {
     if (this.p1 === undefined || this.p2 === undefined) {
       return;
     }
