@@ -7,6 +7,8 @@ export class Line extends Shape {
   static readonly closeThreshold = 10;
   private static num = 1;
 
+  static override runtimeType = "Line";
+
   constructor(private p1?: Point, private p2?: Point) {
     super(`Line#${Line.num++}`);
   }
@@ -228,5 +230,18 @@ export class Line extends Shape {
     if (min === p2Dist || min === edgeDist) {
       this.p2 = this.p2.add(offset);
     }
+  }
+
+  serialize(): object & { runtimeType: string } {
+    return { ...this, runtimeType: Line.runtimeType };
+  }
+
+  deserialize(json: Record<string, any>): void {
+    Object.assign(this, json);
+
+    this.p1 = Object.create(Point.prototype);
+    Object.assign(this.p1, json.p1);
+    this.p2 = Object.create(Point.prototype);
+    Object.assign(this.p2, json.p2);
   }
 }

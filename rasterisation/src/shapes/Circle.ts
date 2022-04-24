@@ -9,6 +9,8 @@ export class Circle extends Shape {
 
   private static num = 1;
 
+  static override runtimeType = "Circle";
+
   constructor() {
     super(`Circle#${Circle.num++}`);
   }
@@ -145,5 +147,15 @@ export class Circle extends Shape {
         this.radius -= offset.magnitude();
       }
     }
+  }
+
+  serialize(): Record<string, any> & { runtimeType: string } {
+    return { ...this, runtimeType: Circle.runtimeType };
+  }
+
+  deserialize(json: Record<string, any>): void {
+    Object.assign(this, json);
+    this.center = Object.create(Point.prototype);
+    Object.assign(this.center, json.center);
   }
 }

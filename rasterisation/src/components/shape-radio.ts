@@ -12,7 +12,7 @@ export class ShapeRadio extends observeState(LitElement) {
           <input
             type="radio"
             id="polygon"
-            name="drone"
+            name="shapes"
             value="polygon"
             ?checked=${appState.shapeMode === "polygon"}
             @change=${this.onChange}
@@ -24,7 +24,7 @@ export class ShapeRadio extends observeState(LitElement) {
           <input
             type="radio"
             id="line"
-            name="drone"
+            name="shapes"
             value="line"
             ?checked=${appState.shapeMode === "line"}
             @change=${this.onChange}
@@ -36,7 +36,7 @@ export class ShapeRadio extends observeState(LitElement) {
           <input
             type="radio"
             id="circle"
-            name="drone"
+            name="shapes"
             value="circle"
             ?checked=${appState.shapeMode === "circle"}
             @change=${this.onChange}

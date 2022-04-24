@@ -9,7 +9,7 @@ import "./components/antialias-checkbox.ts";
 import "./components/drawing-mode.ts";
 import "./components/manage-shape.ts";
 import "./components/pick-shape.ts";
-import "./components/save-shapes.ts";
+import "./components/save-load-shapes.ts";
 import "./components/shape-radio.ts";
 
 @customElement("app-root")
@@ -19,7 +19,7 @@ export class AppRoot extends observeState(LitElement) {
       <canvas-zoom width="200" height="200">
         <app-canvas width="700" height="600" />
         <shape-radio></shape-radio>
-        <save-shapes></save-shapes>
+        <save-load-shapes></save-load-shapes>
         <pick-shape></pick-shape>
         <antialias-checkbox></antialias-checkbox>
         <drawing-mode></drawing-mode>

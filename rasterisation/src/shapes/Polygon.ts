@@ -11,6 +11,8 @@ export class Polygon extends Shape {
   static readonly closeThreshold = 10;
   private static num = 1;
 
+  static override runtimeType = "Polygon";
+
   constructor() {
     super(`Polygon#${Polygon.num++}`);
   }
@@ -120,5 +122,18 @@ export class Polygon extends Shape {
         return;
       }
     }
+  }
+
+  serialize(): object & { runtimeType: string } {
+    return { ...this, runtimeType: Polygon.runtimeType };
+  }
+
+  deserialize(json: Record<string, any>): void {
+    Object.assign(this, json);
+    this.points = json.points.map((e: any) => {
+      const p = Object.create(Point.prototype);
+      Object.assign(p, e);
+      return p;
+    });
   }
 }
