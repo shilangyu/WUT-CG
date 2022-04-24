@@ -29,7 +29,6 @@ export class Circle extends Shape {
 
   // Midpoint Circle Algorithm using only additions extended to all octants
   draw(raster: Raster, _antiAlias: boolean): void {
-    // TODO: optimize
     if (this.center === undefined || this.radius === undefined) {
       return;
     }

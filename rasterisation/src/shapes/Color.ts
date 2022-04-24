@@ -11,3 +11,11 @@ export function fromRgbHex(hex: string): Color {
     Number.parseInt(hex.substring(5, 7), 16),
   ];
 }
+
+export function lerp(c1: Color, c2: Color, frac: number): Color {
+  return [
+    c1[0] * frac + c2[0] * (1 - frac),
+    c1[1] * frac + c2[1] * (1 - frac),
+    c1[2] * frac + c2[2] * (1 - frac),
+  ];
+}

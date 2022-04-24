@@ -1,5 +1,5 @@
 import { Raster } from "../Raster";
-import { toRgbHex } from "./Color";
+import { lerp, toRgbHex } from "./Color";
 import { Point } from "./Point";
 import { Shape } from "./Shape";
 
@@ -26,7 +26,10 @@ export class Line extends Shape {
   }
 
   // Symmetric Midpoint Line Algorithm extended to all octants
-  draw(raster: Raster, _antiAlias: boolean): void {
+  draw(raster: Raster, antiAlias: boolean): void {
+    if (antiAlias) {
+      this.antiAliasDraw(raster);
+    }
     // TODO: simplify
     // TODO: optimize
     if (this.p1 === undefined || this.p2 === undefined) {
@@ -141,6 +144,53 @@ export class Line extends Shape {
             d += dE;
           }
         } while (f.x <= b.x);
+      }
+    }
+  }
+
+  private antiAliasDraw(raster: Raster) {
+    if (this.p1 === undefined || this.p2 === undefined) {
+      return;
+    }
+
+    const slope = Math.abs((this.p2.y - this.p1.y) / (this.p2.x - this.p1.x));
+
+    // slope > 1 means we are in the 2nd, 3rd, 6th, or 7th octant: flip the axes
+    if (slope > 1) {
+      const [p1, p2] =
+        this.p1.y < this.p2.y ? [this.p1, this.p2] : [this.p2, this.p1];
+
+      const slope = (p2.x - p1.x) / (p2.y - p1.y);
+
+      let x = p1.x;
+
+      for (let y = p1.y; y <= p2.y; y++) {
+        const xFloor = Math.floor(x);
+        const xFrac = x - xFloor;
+        const bg = raster.get(new Point(xFloor, y));
+
+        raster.set(new Point(xFloor, y), lerp(this.color, bg, 1 - xFrac));
+        raster.set(new Point(xFloor + 1, y), lerp(this.color, bg, xFrac));
+
+        x += slope;
+      }
+    } else {
+      const [p1, p2] =
+        this.p1.x < this.p2.x ? [this.p1, this.p2] : [this.p2, this.p1];
+
+      const slope = (p2.y - p1.y) / (p2.x - p1.x);
+
+      let y = p1.y;
+
+      for (let x = p1.x; x <= p2.x; x++) {
+        const yFloor = Math.floor(y);
+        const yFrac = y - yFloor;
+        const bg = raster.get(new Point(x, yFloor));
+
+        raster.set(new Point(x, yFloor), lerp(this.color, bg, 1 - yFrac));
+        raster.set(new Point(x, yFloor + 1), lerp(this.color, bg, yFrac));
+
+        y += slope;
       }
     }
   }
