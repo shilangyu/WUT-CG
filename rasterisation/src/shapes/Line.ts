@@ -29,7 +29,9 @@ export class Line extends Shape {
   draw(raster: Raster, antiAlias: boolean): void {
     if (antiAlias) {
       this.antiAliasDraw(raster);
+      return;
     }
+
     // TODO: simplify
     // TODO: optimize
     if (this.p1 === undefined || this.p2 === undefined) {

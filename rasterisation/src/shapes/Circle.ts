@@ -1,5 +1,5 @@
 import { Raster } from "../Raster";
-import { toRgbHex } from "./Color";
+import { Color, lerp, toRgbHex } from "./Color";
 import { Point } from "./Point";
 import { Shape } from "./Shape";
 
@@ -28,7 +28,11 @@ export class Circle extends Shape {
   }
 
   // Midpoint Circle Algorithm using only additions extended to all octants
-  draw(raster: Raster, _antiAlias: boolean): void {
+  draw(raster: Raster, antiAlias: boolean): void {
+    if (antiAlias) {
+      this.antiAliasDraw(raster);
+      return;
+    }
     if (this.center === undefined || this.radius === undefined) {
       return;
     }
@@ -41,14 +45,8 @@ export class Circle extends Shape {
     let pos = new Point(0, r);
 
     do {
-      raster.set(this.center.add(pos), this.color);
-      raster.set(this.center.add(pos.neg()), this.color);
-      raster.set(this.center.add(pos.negX()), this.color);
-      raster.set(this.center.add(pos.negY()), this.color);
-      raster.set(this.center.add(new Point(pos.y, pos.x)), this.color);
-      raster.set(this.center.add(new Point(-pos.y, pos.x)), this.color);
-      raster.set(this.center.add(new Point(pos.y, -pos.x)), this.color);
-      raster.set(this.center.add(new Point(-pos.y, -pos.x)), this.color);
+      Circle.mirrorDraw(raster, this.center, pos, this.color);
+
       if (d < 0) {
         d += dE;
         dE += 2;
@@ -62,6 +60,55 @@ export class Circle extends Shape {
 
       pos = pos.add(new Point(1, 0));
     } while (pos.y >= pos.x);
+  }
+
+  private antiAliasDraw(raster: Raster) {
+    if (this.center === undefined || this.radius === undefined) {
+      return;
+    }
+
+    let x = Math.round(this.radius);
+    let y = 0;
+
+    Circle.mirrorDraw(raster, this.center, new Point(x, y), this.color);
+
+    while (x >= y) {
+      y += 1;
+      const xReal = Math.sqrt(this.radius * this.radius - y * y);
+      x = Math.ceil(xReal);
+
+      const bg = raster.get(new Point(x, y));
+      const T = x - xReal;
+
+      Circle.mirrorDraw(
+        raster,
+        this.center,
+        new Point(x, y),
+        lerp(this.color, bg, 1 - T)
+      );
+      Circle.mirrorDraw(
+        raster,
+        this.center,
+        new Point(x - 1, y),
+        lerp(this.color, bg, T)
+      );
+    }
+  }
+
+  private static mirrorDraw(
+    raster: Raster,
+    center: Point,
+    point: Point,
+    color: Color
+  ) {
+    raster.set(center.add(point), color);
+    raster.set(center.add(point.neg()), color);
+    raster.set(center.add(point.negX()), color);
+    raster.set(center.add(point.negY()), color);
+    raster.set(center.add(new Point(point.y, point.x)), color);
+    raster.set(center.add(new Point(-point.y, point.x)), color);
+    raster.set(center.add(new Point(point.y, -point.x)), color);
+    raster.set(center.add(new Point(-point.y, -point.x)), color);
   }
 
   ctxDraw(ctx: CanvasRenderingContext2D): void {
