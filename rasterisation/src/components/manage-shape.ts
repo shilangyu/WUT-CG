@@ -28,7 +28,8 @@ export class ManageShape extends observeState(LitElement) {
           id="thickness"
           name="thickness"
           min="1"
-          max="10"
+          max="7"
+          step="2"
           @input=${this.onThicknessChange}
           .value=${thickness}
         />

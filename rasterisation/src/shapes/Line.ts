@@ -63,8 +63,8 @@ export class Line extends Shape {
         let d = 2 * delta.x - delta.y;
 
         do {
-          raster.set(f, this.color);
-          raster.set(b, this.color);
+          raster.setThick(f, this.color, this.thickness);
+          raster.setThick(b, this.color, this.thickness);
 
           f = f.add(new Point(0, 1));
           b = b.add(new Point(0, -1));
@@ -83,8 +83,8 @@ export class Line extends Shape {
         let d = 2 * delta.x + delta.y;
 
         do {
-          raster.set(f, this.color);
-          raster.set(b, this.color);
+          raster.setThick(f, this.color, this.thickness);
+          raster.setThick(b, this.color, this.thickness);
 
           f = f.add(new Point(0, 1));
           b = b.add(new Point(0, -1));
@@ -115,8 +115,8 @@ export class Line extends Shape {
         let d = 2 * delta.y - delta.x;
 
         do {
-          raster.set(f, this.color);
-          raster.set(b, this.color);
+          raster.setThick(f, this.color, this.thickness);
+          raster.setThick(b, this.color, this.thickness);
 
           f = f.add(new Point(1, 0));
           b = b.add(new Point(-1, 0));
@@ -135,8 +135,8 @@ export class Line extends Shape {
         let d = 2 * delta.y + delta.x;
 
         do {
-          raster.set(f, this.color);
-          raster.set(b, this.color);
+          raster.setThick(f, this.color, this.thickness);
+          raster.setThick(b, this.color, this.thickness);
 
           f = f.add(new Point(1, 0));
           b = b.add(new Point(-1, 0));

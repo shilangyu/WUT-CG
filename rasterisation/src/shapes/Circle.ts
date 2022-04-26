@@ -47,7 +47,7 @@ export class Circle extends Shape {
     let pos = new Point(0, r);
 
     do {
-      Circle.mirrorDraw(raster, this.center, pos, this.color);
+      this.mirrorDraw(raster, this.center, pos, this.color);
 
       if (d < 0) {
         d += dE;
@@ -72,7 +72,7 @@ export class Circle extends Shape {
     let x = Math.round(this.radius);
     let y = 0;
 
-    Circle.mirrorDraw(raster, this.center, new Point(x, y), this.color);
+    this.mirrorDraw(raster, this.center, new Point(x, y), this.color);
 
     while (x >= y) {
       y += 1;
@@ -82,13 +82,13 @@ export class Circle extends Shape {
       const bg = raster.get(new Point(x, y));
       const T = x - xReal;
 
-      Circle.mirrorDraw(
+      this.mirrorDraw(
         raster,
         this.center,
         new Point(x, y),
         lerp(this.color, bg, 1 - T)
       );
-      Circle.mirrorDraw(
+      this.mirrorDraw(
         raster,
         this.center,
         new Point(x - 1, y),
@@ -97,20 +97,36 @@ export class Circle extends Shape {
     }
   }
 
-  private static mirrorDraw(
+  private mirrorDraw(
     raster: Raster,
     center: Point,
     point: Point,
     color: Color
   ) {
-    raster.set(center.add(point), color);
-    raster.set(center.add(point.neg()), color);
-    raster.set(center.add(point.negX()), color);
-    raster.set(center.add(point.negY()), color);
-    raster.set(center.add(new Point(point.y, point.x)), color);
-    raster.set(center.add(new Point(-point.y, point.x)), color);
-    raster.set(center.add(new Point(point.y, -point.x)), color);
-    raster.set(center.add(new Point(-point.y, -point.x)), color);
+    raster.setThick(center.add(point), color, this.thickness);
+    raster.setThick(center.add(point.neg()), color, this.thickness);
+    raster.setThick(center.add(point.negX()), color, this.thickness);
+    raster.setThick(center.add(point.negY()), color, this.thickness);
+    raster.setThick(
+      center.add(new Point(point.y, point.x)),
+      color,
+      this.thickness
+    );
+    raster.setThick(
+      center.add(new Point(-point.y, point.x)),
+      color,
+      this.thickness
+    );
+    raster.setThick(
+      center.add(new Point(point.y, -point.x)),
+      color,
+      this.thickness
+    );
+    raster.setThick(
+      center.add(new Point(-point.y, -point.x)),
+      color,
+      this.thickness
+    );
   }
 
   ctxDraw(ctx: CanvasRenderingContext2D): void {
