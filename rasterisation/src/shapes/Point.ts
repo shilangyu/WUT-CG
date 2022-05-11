@@ -28,6 +28,10 @@ export class Point {
     return new Point(this.x / scalar, this.y / scalar);
   }
 
+  mul(scalar: number) {
+    return new Point(this.x * scalar, this.y * scalar);
+  }
+
   eq(other: Point) {
     return this.x === other.x && this.y === other.y;
   }
@@ -46,6 +50,10 @@ export class Point {
 
   dot(other: Point) {
     return this.x * other.x + this.y * other.y;
+  }
+
+  round() {
+    return new Point(Math.round(this.x), Math.round(this.y));
   }
 
   static average(...points: Point[]) {
