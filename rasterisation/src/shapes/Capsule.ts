@@ -72,7 +72,7 @@ export class Capsule extends Shape {
     this.drawSemi(raster, p3, p4, 1, r);
   }
 
-  private antiAliasDraw(raster: Raster) {
+  private antiAliasDraw(_raster: Raster) {
     throw new Error("unimplemented");
   }
 
@@ -140,11 +140,11 @@ export class Capsule extends Shape {
     }
   }
 
-  ctxDraw(ctx: CanvasRenderingContext2D): void {
+  ctxDraw(_ctx: CanvasRenderingContext2D): void {
     throw new Error("unimplemented");
   }
 
-  move(anchor: Point, offset: Point): void {
+  move(_anchor: Point, _offset: Point): void {
     throw new Error("unimplemented");
   }
 
