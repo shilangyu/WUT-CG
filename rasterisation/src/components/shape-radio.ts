@@ -55,6 +55,18 @@ export class ShapeRadio extends observeState(LitElement) {
           />
           <label for="capsule">capsule</label>
         </div>
+
+        <div>
+          <input
+            type="radio"
+            id="rectangle"
+            name="shapes"
+            value="rectangle"
+            ?checked=${appState.shapeMode === "rectangle"}
+            @change=${this.onChange}
+          />
+          <label for="rectangle">rectangle</label>
+        </div>
       </div>
     `;
   }

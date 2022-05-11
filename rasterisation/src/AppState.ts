@@ -5,9 +5,10 @@ import { Color } from "./shapes/Color";
 import { Line } from "./shapes/Line";
 import { Point } from "./shapes/Point";
 import { Polygon } from "./shapes/Polygon";
+import { Rectangle } from "./shapes/Rectangle";
 import { Shape } from "./shapes/Shape";
 
-export type ShapeMode = "polygon" | "circle" | "line" | "capsule";
+export type ShapeMode = "polygon" | "circle" | "line" | "capsule" | "rectangle";
 export type DrawingMethod = "context" | "manual";
 
 export class AppState extends LitState<typeof AppState.stateVars> {
@@ -63,6 +64,8 @@ export class AppState extends LitState<typeof AppState.stateVars> {
         return new Circle();
       case "capsule":
         return new Capsule();
+      case "rectangle":
+        return new Rectangle();
     }
   }
 

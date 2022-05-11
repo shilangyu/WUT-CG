@@ -2,9 +2,11 @@ import { html, LitElement } from "lit";
 import { observeState } from "lit-element-state";
 import { customElement, query, state } from "lit/decorators.js";
 import { appState } from "../AppState";
+import { Capsule } from "../shapes/Capsule";
 import { Circle } from "../shapes/Circle";
 import { Line } from "../shapes/Line";
 import { Polygon } from "../shapes/Polygon";
+import { Rectangle } from "../shapes/Rectangle";
 import { Shape } from "../shapes/Shape";
 
 @customElement("save-load-shapes")
@@ -65,6 +67,12 @@ export class SaveLoadShapes extends observeState(LitElement) {
             break;
           case Polygon.runtimeType:
             shape = new Polygon();
+            break;
+          case Capsule.runtimeType:
+            shape = new Capsule();
+            break;
+          case Rectangle.runtimeType:
+            shape = new Rectangle();
             break;
           default:
             throw new Error("unrecognized shape");

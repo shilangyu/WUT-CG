@@ -5,7 +5,7 @@ import { Point } from "./Point";
 import { Shape } from "./Shape";
 
 export class Polygon extends Shape {
-  private points: Point[] = [];
+  protected points: Point[] = [];
   private isClosed = false;
 
   static readonly closeThreshold = 10;
@@ -13,8 +13,8 @@ export class Polygon extends Shape {
 
   static override runtimeType = "Polygon";
 
-  constructor() {
-    super(`Polygon#${Polygon.num++}`);
+  constructor(tag?: string) {
+    super(tag ?? `Polygon#${Polygon.num++}`);
   }
 
   addPoint(p: Point) {
