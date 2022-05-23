@@ -8,10 +8,12 @@
     "build:gh-pages": "tsc && vite build --base=/WUT-CG/"
   },
   "dependencies": {
+    "blueimp-load-image": "^5.16.0",
     "lit": "^2.2.2",
     "lit-element-state": "^1.7.0"
   },
   "devDependencies": {
+    "@types/blueimp-load-image": "^5.14.4",
     "typescript": "^4.6.3",
     "vite": "^2.9.5"
   }

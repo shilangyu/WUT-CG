@@ -4,6 +4,14 @@ import { Point } from "./shapes/Point";
 export class Raster {
   constructor(private source: ImageData) {}
 
+  get width() {
+    return this.source.width;
+  }
+
+  get height() {
+    return this.source.height;
+  }
+
   static brushes: Record<number, Point[]> = {
     [1]: [new Point(0, 0)],
     [3]: [

@@ -9,7 +9,7 @@ export class Line extends Shape {
 
   static override runtimeType = "Line";
 
-  constructor(private p1?: Point, private p2?: Point) {
+  constructor(public p1?: Point, public p2?: Point) {
     super(`Line#${Line.num++}`);
   }
 

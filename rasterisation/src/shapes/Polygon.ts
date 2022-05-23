@@ -124,6 +124,88 @@ export class Polygon extends Shape {
     }
   }
 
+  createEdgeTable(): Map<number, AETItem[]> {
+    const edgeTable = new Map<number, AETItem[]>();
+
+    for (let i = 0; i < this.points.length; i++) {
+      const x1 = this.points[i].x;
+      const y1 = this.points[i].y;
+      const x2 =
+        i === this.points.length - 1 ? this.points[0].x : this.points[i + 1].x;
+      const y2 =
+        i === this.points.length - 1 ? this.points[0].y : this.points[i + 1].y;
+
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+
+      if (dy == 0) {
+        continue;
+      }
+
+      const data: AETItem = {
+        yMax: Math.max(y1, y2),
+        slopeInv: dx / dy,
+        xOfYMin: y1 < y2 ? x1 : x2,
+      };
+
+      const yMin = Math.min(y1, y2);
+      if (edgeTable.has(yMin)) {
+        edgeTable.get(yMin)!.push(data);
+      } else {
+        edgeTable.set(yMin, [data]);
+      }
+    }
+
+    return new Map([...edgeTable.entries()].sort((a, b) => a[0] - b[0]));
+  }
+
+  fill(raster: Raster) {
+    const et = this.createEdgeTable();
+    if (et.size === 0) return;
+
+    let y = et.keys().next().value as number;
+    let aet = <AETItem[]>[];
+
+    while (aet.length != 0 || et.size != 0) {
+      if (et.has(y)) {
+        aet.push(...et.get(y)!);
+        et.delete(y);
+      }
+
+      aet = aet.sort((a, b) => a.xOfYMin - b.xOfYMin);
+
+      for (let i = 0; i < aet.length; i += 2) {
+        const x1 = Math.round(aet[i].xOfYMin);
+        const x2 = Math.round(aet[i + 1].xOfYMin);
+
+        this.fillBetween(raster, x1, x2, y);
+      }
+
+      y += 1;
+
+      aet = aet.filter((e) => e.yMax > y);
+
+      for (const e of aet) {
+        e.xOfYMin += e.slopeInv;
+      }
+    }
+  }
+
+  fillBetween(raster: Raster, x1: number, x2: number, y: number) {
+    if (this.fillImage) {
+      for (let x = x1; x < x2; x++) {
+        raster.set(
+          new Point(x, y),
+          this.fillImage.get(new Point(x % raster.width, y % raster.height))
+        );
+      }
+    } else if (this.fillColor) {
+      for (let x = x1; x < x2; x++) {
+        raster.set(new Point(x, y), this.fillColor);
+      }
+    }
+  }
+
   serialize(): object & { runtimeType: string } {
     return { ...this, runtimeType: Polygon.runtimeType };
   }

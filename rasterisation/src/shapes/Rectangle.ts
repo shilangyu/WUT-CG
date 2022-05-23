@@ -6,8 +6,30 @@ export class Rectangle extends Polygon {
 
   static override runtimeType = "Rectangle";
 
-  constructor() {
+  constructor(p1?: Point, p2?: Point) {
     super(`Rectangle#${Rectangle.myNum++}`);
+    if (p1) {
+      this.addPoint(p1);
+    }
+    if (p2) {
+      this.addPoint(p2);
+    }
+  }
+
+  get left() {
+    return Math.min(this.points[0].x, this.points[1].x);
+  }
+
+  get right() {
+    return Math.max(this.points[0].x, this.points[1].x);
+  }
+
+  get top() {
+    return Math.max(this.points[0].y, this.points[1].y);
+  }
+
+  get bottom() {
+    return Math.min(this.points[0].y, this.points[1].y);
   }
 
   override addPoint(p: Point) {

@@ -4,6 +4,8 @@ import { Point } from "./Point";
 
 export abstract class Shape {
   color: Color = [0, 0, 0];
+  fillColor?: Color;
+  fillImage?: Raster;
   thickness = 1;
 
   static runtimeType = "Shape";

@@ -44,6 +44,20 @@ export class AppState extends LitState<typeof AppState.stateVars> {
     }
   }
 
+  changeSelectedShapeFillColor(color: Color) {
+    if (this.selectedShape) {
+      this.selectedShape.fillColor = color;
+      this.shapes = [...this.shapes];
+    }
+  }
+
+  changeSelectedShapeFillImage(bmp: Raster) {
+    if (this.selectedShape) {
+      this.selectedShape.fillImage = bmp;
+      this.shapes = [...this.shapes];
+    }
+  }
+
   deleteSelectedShape() {
     this.shapes = this.shapes.filter((e) => e.id !== this.selectedShapeId);
     this.selectedShapeId = undefined;
