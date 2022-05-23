@@ -13,7 +13,8 @@ export class ManageShape extends observeState(LitElement) {
     const thickness = appState.selectedShape?.thickness ?? 1;
     const color = toRgbHex(appState.selectedShape?.color ?? [0, 0, 0]);
     const fillColor = toRgbHex(appState.selectedShape?.fillColor ?? [0, 0, 0]);
-    const isClippingWith = false;
+    const isClippingWith =
+      appState.clipWithShapeId === appState.selectedShapeId;
 
     return html`
       <div>
