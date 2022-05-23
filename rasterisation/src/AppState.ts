@@ -1,4 +1,5 @@
 import { LitState } from "lit-element-state";
+import { Raster } from "./Raster";
 import { Capsule } from "./shapes/Capsule";
 import { Circle } from "./shapes/Circle";
 import { Color } from "./shapes/Color";
@@ -13,11 +14,12 @@ export type DrawingMethod = "context" | "manual";
 
 export class AppState extends LitState<typeof AppState.stateVars> {
   static stateVars = {
-    shapeMode: "line" as ShapeMode,
+    shapeMode: "polygon" as ShapeMode,
     drawingMethod: "context" as DrawingMethod,
     antiAlias: false,
     shapes: [] as Shape[],
     selectedShapeId: undefined as string | undefined,
+    clipWithShapeId: undefined as string | undefined,
   };
 
   shapeMode!: ShapeMode;
@@ -25,9 +27,14 @@ export class AppState extends LitState<typeof AppState.stateVars> {
   antiAlias!: boolean;
   shapes!: Shape[];
   selectedShapeId?: string;
+  clipWithShapeId?: string;
 
   get selectedShape() {
     return this.shapes.find((e) => e.id === this.selectedShapeId);
+  }
+
+  get clipWithShape() {
+    return this.shapes.find((e) => e.id === this.clipWithShapeId);
   }
 
   changeSelectedShapeThickness(thickness: number) {
@@ -60,12 +67,26 @@ export class AppState extends LitState<typeof AppState.stateVars> {
 
   deleteSelectedShape() {
     this.shapes = this.shapes.filter((e) => e.id !== this.selectedShapeId);
+    if (this.selectedShapeId === this.clipWithShapeId) {
+      this.clipWithShapeId = undefined;
+    }
     this.selectedShapeId = undefined;
   }
 
   deleteAllShapes() {
     this.selectedShapeId = undefined;
+    this.clipWithShapeId = undefined;
     this.shapes = [];
+  }
+
+  clipWithSelectedShape(clipWith: boolean) {
+    if (this.selectedShape) {
+      if (clipWith) {
+        this.clipWithShapeId = this.selectedShape.id;
+      } else {
+        this.clipWithShapeId = undefined;
+      }
+    }
   }
 
   createCurrentShape(): Shape {

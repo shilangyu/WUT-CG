@@ -7,6 +7,7 @@ export abstract class Shape {
   fillColor?: Color;
   fillImage?: Raster;
   thickness = 1;
+  canBeClippedWith = false;
 
   static runtimeType = "Shape";
 
@@ -15,7 +16,7 @@ export abstract class Shape {
   /// returns true if done drawing
   abstract addPoint(p: Point): boolean;
 
-  abstract draw(raster: Raster, antiAlias: boolean): void;
+  abstract draw(raster: Raster, antiAlias: boolean, clipper?: Shape): void;
 
   abstract ctxDraw(ctx: CanvasRenderingContext2D): void;
 

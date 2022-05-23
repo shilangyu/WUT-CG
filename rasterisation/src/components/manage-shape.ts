@@ -1,20 +1,19 @@
 import loadImage from "blueimp-load-image";
 import { html, LitElement } from "lit";
 import { observeState } from "lit-element-state";
-import { customElement, query } from "lit/decorators.js";
+import { customElement } from "lit/decorators.js";
 import { appState } from "../AppState";
 import { Raster } from "../Raster";
 import { fromRgbHex, toRgbHex } from "../shapes/Color";
 
 @customElement("manage-shape")
 export class ManageShape extends observeState(LitElement) {
-  @query("#fill-image")
-  private fillImageElement!: HTMLInputElement;
-
   override render() {
+    const canBeClippedWith = appState.selectedShape?.canBeClippedWith ?? false;
     const thickness = appState.selectedShape?.thickness ?? 1;
     const color = toRgbHex(appState.selectedShape?.color ?? [0, 0, 0]);
     const fillColor = toRgbHex(appState.selectedShape?.fillColor ?? [0, 0, 0]);
+    const isClippingWith = false;
 
     return html`
       <div>
@@ -59,6 +58,18 @@ export class ManageShape extends observeState(LitElement) {
           />
         </div>
         <label for="thickness">Thickness = ${thickness}</label>
+
+        ${canBeClippedWith &&
+        html`<div>
+          <input
+            type="checkbox"
+            id="clip-with"
+            name="clip-with"
+            .checked=${isClippingWith}
+            @change=${this.onClipWithChange}
+          />
+          <label for="clip-with">Clip with</label>
+        </div>`}
       </div>
     `;
   }
@@ -81,6 +92,12 @@ export class ManageShape extends observeState(LitElement) {
     appState.changeSelectedShapeColor(value);
   }
 
+  private onClipWithChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+
+    appState.clipWithSelectedShape(target.checked);
+  }
+
   private onFillColorChange(e: Event) {
     const target = e.target as HTMLInputElement;
     const value = fromRgbHex(target.value);
@@ -88,8 +105,10 @@ export class ManageShape extends observeState(LitElement) {
     appState.changeSelectedShapeFillColor(value);
   }
 
-  private async onFillImageChange() {
-    let data = await loadImage(this.fillImageElement.files![0], {});
+  private async onFillImageChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+
+    let data = await loadImage(target.files![0], {});
 
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d")!;

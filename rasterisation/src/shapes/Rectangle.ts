@@ -4,6 +4,8 @@ import { Polygon } from "./Polygon";
 export class Rectangle extends Polygon {
   private static myNum = 1;
 
+  override canBeClippedWith = true;
+
   static override runtimeType = "Rectangle";
 
   constructor(p1?: Point, p2?: Point) {
@@ -17,19 +19,19 @@ export class Rectangle extends Polygon {
   }
 
   get left() {
-    return Math.min(this.points[0].x, this.points[1].x);
+    return Math.min(...this.points.map((e) => e.x));
   }
 
   get right() {
-    return Math.max(this.points[0].x, this.points[1].x);
+    return Math.max(...this.points.map((e) => e.x));
   }
 
   get top() {
-    return Math.max(this.points[0].y, this.points[1].y);
+    return Math.max(...this.points.map((e) => e.y));
   }
 
   get bottom() {
-    return Math.min(this.points[0].y, this.points[1].y);
+    return Math.min(...this.points.map((e) => e.y));
   }
 
   override addPoint(p: Point) {

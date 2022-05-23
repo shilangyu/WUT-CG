@@ -46,7 +46,7 @@ export class AppCanvas extends observeState(Lit2DCanvas) {
 
         for (const shape of [...appState.shapes, this.active]) {
           ctx.save();
-          shape?.draw(raster, appState.antiAlias);
+          shape?.draw(raster, appState.antiAlias, appState.clipWithShape);
           ctx.restore();
         }
 

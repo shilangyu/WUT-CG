@@ -2,6 +2,7 @@ import { Raster } from "../Raster";
 import { toRgbHex } from "./Color";
 import { Line } from "./Line";
 import { Point } from "./Point";
+import { Rectangle } from "./Rectangle";
 import { Shape } from "./Shape";
 
 export class Polygon extends Shape {
@@ -39,7 +40,7 @@ export class Polygon extends Shape {
     return this.isClosed;
   }
 
-  draw(raster: Raster, antiAlias: boolean): void {
+  draw(raster: Raster, antiAlias: boolean, clipper?: Shape): void {
     // TODO: optimize
     let lines = this.points.map((e, i) => {
       const line = new Line(e, this.points[(i + 1) % this.points.length]);
@@ -54,7 +55,35 @@ export class Polygon extends Shape {
     }
 
     for (const line of lines) {
-      line.draw(raster, antiAlias);
+      if (clipper && this !== clipper) {
+        // assume we are always clipping with rectangle
+        let liang = liangBarsky(line.p1!, line.p2!, clipper as Rectangle);
+        if (liang) {
+          let out1 = new Line(line.p1!, liang[0]);
+          out1.color = [255, 0, 0];
+          out1.thickness = this.thickness;
+
+          let in_ = new Line(liang[0], liang[1]);
+          in_.color = [0, 255, 0];
+          in_.thickness = this.thickness;
+
+          let out2 = new Line(liang[1], line.p2!);
+          out2.color = [255, 0, 0];
+          out2.thickness = this.thickness;
+
+          out1.draw(raster, antiAlias);
+          out2.draw(raster, antiAlias);
+          in_.draw(raster, antiAlias);
+        } else {
+          line.draw(raster, antiAlias);
+        }
+      } else {
+        line.draw(raster, antiAlias);
+      }
+    }
+
+    if (this.fillColor || this.fillImage) {
+      this.fill(raster);
     }
   }
 
@@ -219,3 +248,70 @@ export class Polygon extends Shape {
     });
   }
 }
+
+function clip(
+  denom: number,
+  numer: number,
+  tE: number,
+  tL: number
+): [boolean, number, number] {
+  if (denom === 0) {
+    if (numer < 0) return [false, tE, tL];
+    return [true, tE, tL];
+  }
+
+  const t = numer / denom;
+  if (denom > 0) {
+    if (t < tL) tL = t;
+  } else {
+    if (t > tE) tE = t;
+  }
+
+  return [true, tE, tL];
+}
+
+function liangBarsky(
+  p1: Point,
+  p2: Point,
+  rect: Rectangle
+): [Point, Point] | undefined {
+  let dx = p2.x - p1.x;
+  let dy = p2.y - p1.y;
+  let tE = 0;
+  let tL = 1;
+
+  let good = false;
+
+  [good, tE, tL] = clip(-dx, p1.x - rect.left, tE, tL);
+  if (good) {
+    [good, tE, tL] = clip(dx, rect.right - p1.x, tE, tL);
+    if (good) {
+      [good, tE, tL] = clip(-dy, p1.y - rect.bottom, tE, tL);
+      if (good) {
+        [good, tE, tL] = clip(dy, rect.top - p1.y, tE, tL);
+        if (good) {
+          if (tE <= tL) {
+            let i1 = new Point(
+              p1.x + Math.floor(tE * dx),
+              p1.y + Math.floor(tE * dy)
+            );
+            let i2 = new Point(
+              p1.x + Math.floor(tL * dx),
+              p1.y + Math.floor(tL * dy)
+            );
+
+            return [i1, i2];
+          }
+        }
+      }
+    }
+  }
+
+  return undefined;
+}
+
+type AETItem = {
+  yMax: number;
+  xOfYMin: number;
+  slopeInv: number;
+};
