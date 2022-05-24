@@ -1,5 +1,5 @@
 import { LitState } from "lit-element-state";
-import { Raster } from "./Raster";
+import { Bitmap } from "./Bitmap";
 import { Capsule } from "./shapes/Capsule";
 import { Circle } from "./shapes/Circle";
 import { Color } from "./shapes/Color";
@@ -62,7 +62,7 @@ export class AppState extends LitState<typeof AppState.stateVars> {
     }
   }
 
-  changeSelectedShapeFillImage(bmp: Raster) {
+  changeSelectedShapeFillImage(bmp: Bitmap) {
     if (this.selectedShape) {
       this.selectedShape.fillImage = bmp;
       this.shapes = [...this.shapes];

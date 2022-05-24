@@ -3,7 +3,7 @@ import { html, LitElement } from "lit";
 import { observeState } from "lit-element-state";
 import { customElement } from "lit/decorators.js";
 import { appState } from "../AppState";
-import { Raster } from "../Raster";
+import { Bitmap } from "../Bitmap";
 import { fromRgbHex, toRgbHex } from "../shapes/Color";
 
 @customElement("manage-shape")
@@ -124,7 +124,7 @@ export class ManageShape extends observeState(LitElement) {
       data.image.height
     );
 
-    const bmp = new Raster(imageData);
+    const bmp = new Bitmap(imageData);
 
     appState.changeSelectedShapeFillImage(bmp);
   }

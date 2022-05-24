@@ -207,7 +207,7 @@ export class Polygon extends Shape {
         const x1 = Math.round(aet[i].xOfYMin);
         const x2 = Math.round(aet[i + 1].xOfYMin);
 
-        this.fillBetween(raster, x1, x2, y);
+        if (y >= 0) this.fillBetween(raster, x1, x2, y);
       }
 
       y += 1;
@@ -225,7 +225,9 @@ export class Polygon extends Shape {
       for (let x = x1; x < x2; x++) {
         raster.set(
           new Point(x, y),
-          this.fillImage.get(new Point(x % raster.width, y % raster.height))
+          this.fillImage.data[y % this.fillImage.height][
+            x % this.fillImage.width
+          ]
         );
       }
     } else if (this.fillColor) {

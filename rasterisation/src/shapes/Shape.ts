@@ -1,3 +1,4 @@
+import { Bitmap } from "../Bitmap";
 import { Raster } from "../Raster";
 import { Color } from "./Color";
 import { Point } from "./Point";
@@ -5,7 +6,7 @@ import { Point } from "./Point";
 export abstract class Shape {
   color: Color = [0, 0, 0];
   fillColor?: Color;
-  fillImage?: Raster;
+  fillImage?: Bitmap;
   thickness = 1;
   canBeClippedWith = false;
 
