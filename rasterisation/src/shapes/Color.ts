@@ -19,3 +19,7 @@ export function lerp(c1: Color, c2: Color, frac: number): Color {
     c1[2] * frac + c2[2] * (1 - frac),
   ];
 }
+
+export function colorEq(c1: Color, c2: Color) {
+  return c1[0] === c2[0] && c1[1] === c2[1] && c1[2] === c2[2];
+}

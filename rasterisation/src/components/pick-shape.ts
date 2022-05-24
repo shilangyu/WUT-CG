@@ -29,6 +29,11 @@ export class PickShape extends observeState(LitElement) {
             `
         )}
       </select>
+      <button @click=${this.onIsAddingFillPointsChange}>
+        ${appState.isAddingFillPoints
+          ? "Stop adding fill points"
+          : "Add fill points"}
+      </button>
     `;
   }
 
@@ -36,6 +41,10 @@ export class PickShape extends observeState(LitElement) {
     const target = e.target as HTMLSelectElement;
     const value = target.selectedOptions[0].value;
     appState.selectedShapeId = value === "" ? undefined : value;
+  }
+
+  private onIsAddingFillPointsChange() {
+    appState.isAddingFillPoints = !appState.isAddingFillPoints;
   }
 }
 

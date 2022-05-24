@@ -4,6 +4,7 @@ import { customElement, state } from "lit/decorators.js";
 import { appState } from "./AppState";
 import { Lit2DCanvas } from "./Lit2DCanvas";
 import { Raster } from "./Raster";
+import { Color, colorEq } from "./shapes/Color";
 import { Point } from "./shapes/Point";
 import { Shape } from "./shapes/Shape";
 
@@ -50,6 +51,10 @@ export class AppCanvas extends observeState(Lit2DCanvas) {
           ctx.restore();
         }
 
+        for (const p of appState.fillPoints) {
+          floodFill(raster, p);
+        }
+
         raster.paintOnto(ctx);
         break;
     }
@@ -63,6 +68,11 @@ export class AppCanvas extends observeState(Lit2DCanvas) {
     }
 
     const point = points[0];
+
+    if (appState.isAddingFillPoints) {
+      appState.addFillPoint(point);
+      return;
+    }
 
     if (!this.active) {
       this.active = appState.createCurrentShape();
@@ -108,5 +118,31 @@ export class AppCanvas extends observeState(Lit2DCanvas) {
 declare global {
   interface HTMLElementTagNameMap {
     "app-canvas": AppCanvas;
+  }
+}
+
+function floodFill(raster: Raster, p: Point) {
+  const bg = raster.get(p);
+  const fg: Color = [255, 0, 0];
+
+  const stack = [p];
+
+  while (stack.length !== 0) {
+    const p = stack.pop()!;
+
+    if (p.x < 0 || p.y < 0 || p.x >= raster.width || p.y >= raster.height) {
+      continue;
+    }
+
+    const curr = raster.get(p);
+
+    if (colorEq(bg, curr)) {
+      raster.set(p, fg);
+
+      stack.push(p.add(new Point(0, 1)));
+      stack.push(p.add(new Point(1, 0)));
+      stack.push(p.add(new Point(0, -1)));
+      stack.push(p.add(new Point(-1, 0)));
+    }
   }
 }

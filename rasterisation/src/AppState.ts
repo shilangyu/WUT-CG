@@ -20,6 +20,8 @@ export class AppState extends LitState<typeof AppState.stateVars> {
     shapes: [] as Shape[],
     selectedShapeId: undefined as string | undefined,
     clipWithShapeId: undefined as string | undefined,
+    fillPoints: [],
+    isAddingFillPoints: false,
   };
 
   shapeMode!: ShapeMode;
@@ -28,6 +30,8 @@ export class AppState extends LitState<typeof AppState.stateVars> {
   shapes!: Shape[];
   selectedShapeId?: string;
   clipWithShapeId?: string;
+  fillPoints!: Point[];
+  isAddingFillPoints!: boolean;
 
   get selectedShape() {
     return this.shapes.find((e) => e.id === this.selectedShapeId);
@@ -87,6 +91,10 @@ export class AppState extends LitState<typeof AppState.stateVars> {
         this.clipWithShapeId = undefined;
       }
     }
+  }
+
+  addFillPoint(p: Point) {
+    this.fillPoints = [...this.fillPoints, p];
   }
 
   createCurrentShape(): Shape {
