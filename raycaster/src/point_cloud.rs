@@ -19,10 +19,9 @@ impl PointCloud {
             lines,
             rot: Vec3::ZERO,
             d_rot: vec3(
-                ::rand::random::<f32>() / 50.,
-                ::rand::random::<f32>() / 50.,
-                ::rand::random::<f32>() / 50.,
-                // 0.3, 0.2, 0.1,
+                ::quad_rand::gen_range(0., 1. / 50.),
+                ::quad_rand::gen_range(0., 1. / 50.),
+                ::quad_rand::gen_range(0., 1. / 50.),
             ),
             d,
         }
