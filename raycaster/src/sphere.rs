@@ -1,5 +1,7 @@
 use macroquad::prelude::*;
 
+use crate::utils::*;
+
 pub struct Sphere {
     pos: Vec4,
     radius: f32,
@@ -14,7 +16,7 @@ impl Sphere {
     }
 
     pub fn get_pos(&self) -> Vec3 {
-        vec3(self.pos.x, self.pos.y, self.pos.z)
+        into_vec3(&self.pos)
     }
 
     pub fn get_radius(&self) -> f32 {
