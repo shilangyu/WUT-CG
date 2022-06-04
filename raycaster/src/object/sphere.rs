@@ -37,8 +37,8 @@ impl Object for Sphere {
         let ps = self.pos();
 
         // solution to quadriatic equation of time of intersection between the ray and the surface of a sphere
-        let b = 2. * ray.v().dot(ray.p() - ps);
-        let c = (ray.p() - ps).length_squared() - (self.radius * self.radius);
+        let b = 2. * ray.v.dot(ray.p - ps);
+        let c = (ray.p - ps).length_squared() - (self.radius * self.radius);
 
         let off = f32::sqrt(b * b - 4. * c);
 
@@ -62,7 +62,7 @@ impl Object for Sphere {
         // get first ray intersection
         let t_first = f32::min(t1, t2);
 
-        let intersection_point = ray.p() + t_first * ray.v();
+        let intersection_point = ray.p + t_first * ray.v;
 
         let unit_normal = (intersection_point - ps).normalize();
 
