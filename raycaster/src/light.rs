@@ -1,21 +1,20 @@
 use macroquad::prelude::*;
 
-/// Omnidirectional light at a given point
-pub struct PointLight {
-    pos: Vec3,
-    color: Color,
+pub enum Light {
+    /// Omnidirectional light at a given point
+    Point { pos: Vec3, color: Color },
 }
 
-impl PointLight {
-    pub fn new(pos: Vec3, color: Color) -> Self {
-        Self { pos, color }
-    }
-
+impl Light {
     pub fn pos(&self) -> Vec3 {
-        self.pos
+        match self {
+            Light::Point { pos, .. } => *pos,
+        }
     }
 
     pub fn color(&self) -> Color {
-        self.color
+        match self {
+            Light::Point { color, .. } => *color,
+        }
     }
 }
