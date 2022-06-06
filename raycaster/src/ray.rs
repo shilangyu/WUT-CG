@@ -23,8 +23,8 @@ impl Ray {
         assert_approx!(v.length_squared(), 1., 0.0001);
 
         Self {
-            p: into_vec3(p),
-            v: into_vec3(v),
+            p: p.xyz(),
+            v: v.xyz(),
         }
     }
 }

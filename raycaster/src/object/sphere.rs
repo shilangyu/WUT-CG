@@ -24,7 +24,7 @@ impl Sphere {
     }
 
     pub fn pos(&self) -> Vec3 {
-        into_vec3(self.pos)
+        self.pos.xyz()
     }
 }
 
