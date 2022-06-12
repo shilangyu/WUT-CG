@@ -21,10 +21,6 @@ impl Sphere {
             material,
         }
     }
-
-    pub fn pos(&self) -> Vec3 {
-        self.pos.xyz()
-    }
 }
 
 impl Object for Sphere {
@@ -33,7 +29,7 @@ impl Object for Sphere {
     }
 
     fn intersect(&self, ray: &Ray) -> Option<RayIntersection> {
-        let ps = self.pos();
+        let ps = self.pos.xyz();
 
         // solution to quadriatic equation of time of intersection between the ray and the surface of a sphere
         let b = 2. * ray.v.dot(ray.p - ps);

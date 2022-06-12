@@ -8,7 +8,7 @@ use light::Light;
 
 use crate::{
     material::PhongMaterial,
-    object::{sphere::Sphere, *},
+    object::{ellipsoid::Ellipsoid, sphere::Sphere, *},
 };
 
 mod camera;
@@ -36,8 +36,18 @@ fn conf() -> Conf {
 
 #[macroquad::main(conf)]
 async fn main() {
-    let scene = vec![
-        Sphere::new(
+    let scene: Vec<Box<dyn Object>> = vec![
+        Box::new(Ellipsoid::new(
+            vec3(0., 0., -50.),
+            vec3(10., 20., 15.),
+            PhongMaterial::new(
+                vec3(0.5, 0.5, 0.5),
+                vec3(0.5, 0.5, 0.5),
+                vec3(0.5, 0.5, 0.5),
+                2.,
+            ),
+        )),
+        Box::new(Sphere::new(
             vec3(10., -20., -50.),
             10.,
             PhongMaterial::new(
@@ -46,8 +56,8 @@ async fn main() {
                 vec3(0.5, 0.5, 0.5),
                 2.,
             ),
-        ),
-        Sphere::new(
+        )),
+        Box::new(Sphere::new(
             vec3(-10., -20., -50.),
             10.,
             PhongMaterial::new(
@@ -56,8 +66,8 @@ async fn main() {
                 vec3(0.5, 0.5, 0.5),
                 2.,
             ),
-        ),
-        Sphere::new(
+        )),
+        Box::new(Sphere::new(
             vec3(0., -10., -50.),
             10.,
             PhongMaterial::new(
@@ -66,8 +76,8 @@ async fn main() {
                 vec3(0.5, 0.5, 0.5),
                 2.,
             ),
-        ),
-        Sphere::new(
+        )),
+        Box::new(Sphere::new(
             vec3(0., 0., -50.),
             10.,
             PhongMaterial::new(
@@ -76,8 +86,8 @@ async fn main() {
                 vec3(0.5, 0.5, 0.5),
                 2.,
             ),
-        ),
-        Sphere::new(
+        )),
+        Box::new(Sphere::new(
             vec3(0., 10., -50.),
             10.,
             PhongMaterial::new(
@@ -86,8 +96,8 @@ async fn main() {
                 vec3(0.5, 0.5, 0.5),
                 2.,
             ),
-        ),
-        Sphere::new(
+        )),
+        Box::new(Sphere::new(
             vec3(0., 20., -50.),
             10.,
             PhongMaterial::new(
@@ -96,7 +106,7 @@ async fn main() {
                 vec3(0.5, 0.5, 0.5),
                 2.,
             ),
-        ),
+        )),
     ];
 
     let mut camera = camera::Camera::new(Vec3::Z * 3., -Vec3::Z, Vec3::Y, PI / 3.);

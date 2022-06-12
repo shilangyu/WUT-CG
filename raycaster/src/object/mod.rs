@@ -1,3 +1,4 @@
+pub mod ellipsoid;
 pub mod sphere;
 
 use crate::{
