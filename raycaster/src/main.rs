@@ -1,18 +1,14 @@
-#![allow(unused)]
+#![allow(dead_code)]
 
 use std::f32::consts::PI;
-use std::time::{Duration, Instant};
 
 use macroquad::prelude::*;
 
 use light::Light;
-use point_cloud::PointCloud;
-use rayon::prelude::*;
 
 use crate::{
     material::PhongMaterial,
     object::{sphere::Sphere, *},
-    ray::RayIntersection,
 };
 
 mod camera;

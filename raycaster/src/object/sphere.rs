@@ -3,7 +3,6 @@ use macroquad::prelude::*;
 use crate::{
     material::PhongMaterial,
     ray::{Ray, RayIntersection},
-    utils::*,
 };
 
 use super::Object;
