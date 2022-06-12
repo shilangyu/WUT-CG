@@ -114,6 +114,15 @@ async fn main() {
     let mut t = 0f32;
 
     loop {
+        let w = screen_width();
+        let h = screen_height();
+
+        let mut raster = Image {
+            width: w as _,
+            height: h as _,
+            bytes: vec![0; w as usize * h as usize * 4],
+        };
+
         let time_step = get_frame_time();
         let lights = vec![
             Light::Point {
@@ -153,15 +162,9 @@ async fn main() {
 
         clear_background(BLACK);
 
-        let w = screen_width();
-        let h = screen_height();
-
         for x in 0..w as u32 {
             for y in 0..h as u32 {
-                let x = x as f32;
-                let y = y as f32;
-
-                let ray = camera.ray(vec2(x, y), vec2(w, h));
+                let ray = camera.ray(vec2(x as f32, y as f32), vec2(w, h));
 
                 let i = scene
                     .iter()
@@ -173,10 +176,12 @@ async fn main() {
                         .material()
                         .reflect(&intersect, camera.pos(), &lights, 0.1);
 
-                    draw_rectangle(x, y, 1., 1., c);
+                    raster.set_pixel(x, y, c);
                 }
             }
         }
+
+        draw_texture(Texture2D::from_image(&raster), 0., 0., WHITE);
 
         draw_text(&get_fps().to_string(), w - 24., h - 4., 24., WHITE);
         draw_text(
