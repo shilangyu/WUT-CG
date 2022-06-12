@@ -163,6 +163,9 @@ async fn main() {
                     .min_by(|(a, _), (b, _)| a.t.partial_cmp(&b.t).expect("t was NaN"));
 
                 if let Some((intersect, obj)) = i {
+                    let c = obj
+                        .material()
+                        .reflect(&intersect, camera.pos(), &lights, 0.1);
 
                     draw_rectangle(x, y, 1., 1., c);
                 }
