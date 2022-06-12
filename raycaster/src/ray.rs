@@ -19,12 +19,9 @@ pub struct RayIntersection {
 }
 
 impl Ray {
-    pub fn new(p: Vec4, v: Vec4) -> Self {
+    pub fn new(p: Vec3, v: Vec4) -> Self {
         assert_approx!(v.length_squared(), 1., 0.0001);
 
-        Self {
-            p: p.xyz(),
-            v: v.xyz(),
-        }
+        Self { p, v: v.xyz() }
     }
 }

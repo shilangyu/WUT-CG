@@ -1,12 +1,6 @@
-use std::f32::consts::PI;
-
 use macroquad::prelude::*;
 
-use crate::{
-    ray::Ray,
-    transformations::{self, rotate_x},
-    utils::rotate_around,
-};
+use crate::{ray::Ray, utils::rotate_around};
 
 pub struct Camera {
     pos: Vec3,
@@ -83,6 +77,25 @@ impl Camera {
         self.target = self.pos + rot_dir * self.pos.distance(self.target);
     }
 
+    #[must_use]
+    pub fn ray(&self, pixel: Vec2, window_size: Vec2) -> Ray {
+        // ray calculated from the camera system coordinate (pos = vec3(0, 0, 0))
+        let c = window_size / 2.;
+
+        // distance from the view window
+        let d = window_size.x / (2. * f32::tan(self.fov / 2.));
+
+        // translate to view window
+        let q = vec4(pixel.x - c.x, -pixel.y + c.y, -d, 0.);
+
+        // vector from camera to view point so: (q - pos).normalize(), but pos is (0, 0, 0)
+        let v_prime = q.normalize();
+
+        let m_inv = self.inv_view_matrix();
+
+        // translate data to scene system coordinate, self.pos is equivalent with m_inv * (0, 0, 0, 1)
+        Ray::new(self.pos, m_inv * v_prime)
+    }
 
     pub fn pos(&self) -> Vec3 {
         self.pos
