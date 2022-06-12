@@ -10,6 +10,13 @@ macro_rules! assert_approx {
 
 pub(crate) use assert_approx;
 
+/// Rotate a vector in R^3 around a given axis by given angle in radians
+pub fn rotate_around(v: Vec3, axis: Vec3, angle: f32) -> Vec3 {
+    let ux = axis.cross(v);
+
+    axis * axis.dot(v) + f32::cos(angle) * ux.cross(axis) + f32::sin(angle) * ux
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
