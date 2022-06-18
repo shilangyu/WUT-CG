@@ -8,13 +8,13 @@ use light::Light;
 
 use crate::{
     material::PhongMaterial,
-    object::{ellipsoid::Ellipsoid, sphere::Sphere, *},
+    objects::{ellipsoid::Ellipsoid, plane::Plane, sphere::Sphere, torus::Torus, *},
 };
 
 mod camera;
 mod light;
 mod material;
-mod object;
+mod objects;
 mod point_cloud;
 mod ray;
 mod transformations;

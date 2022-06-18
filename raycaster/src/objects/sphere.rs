@@ -16,7 +16,7 @@ pub struct Sphere {
 impl Sphere {
     pub fn new(pos: Vec3, radius: f32, material: PhongMaterial) -> Self {
         Self {
-            pos: vec4(pos.x, pos.y, pos.z, 1.),
+            pos: pos.extend(1.),
             radius,
             material,
         }
