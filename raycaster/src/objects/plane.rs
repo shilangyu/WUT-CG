@@ -55,12 +55,11 @@ impl Object for Plane {
         }
 
         let intersection_point = ray.p + t * ray.v;
-        // TODO: something is wrong, renders in a weird way
 
         Some(RayIntersection {
             t,
-            p: (denom).signum() * intersection_point,
-            n: self.normal,
+            p: intersection_point,
+            n: (-denom).signum() * self.normal,
         })
     }
 }
