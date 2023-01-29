@@ -15,7 +15,7 @@ export type DrawingMethod = "context" | "manual";
 export class AppState extends LitState<typeof AppState.stateVars> {
   static stateVars = {
     shapeMode: "polygon" as ShapeMode,
-    drawingMethod: "context" as DrawingMethod,
+    drawingMethod: "manual" as DrawingMethod,
     antiAlias: false,
     shapes: [] as Shape[],
     selectedShapeId: undefined as string | undefined,
