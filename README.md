@@ -17,7 +17,8 @@
 - Edge detection
 - Emboss
 
-TODO: screenshots
+![ImageFiltering program example](assets/image_filtering-demo.png)
+
 
 ## rasterisation
 
