@@ -21,7 +21,7 @@
 
 ## rasterisation
 
-[A TypeScript lit program](./rasterisation) (hosted at [github.shilangyu.dev/WUT-CG](github.shilangyu.dev/WUT-CG)) for applying rasterisation techniques to vector elements. These include:
+[A TypeScript lit program](./rasterisation) (hosted at [github.shilangyu.dev/WUT-CG](https://github.shilangyu.dev/WUT-CG)) for applying rasterisation techniques to vector elements. These include:
 
 - Drawing shapes (polygons, lines, circles, capsules)
 - Filling shapes (with solid color or bitmap images)
